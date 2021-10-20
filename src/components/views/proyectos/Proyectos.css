@@ -1,0 +1,25 @@
+.resumenTotales{
+    background-color: rgb(32, 32, 32);
+    padding: 5px;
+    padding-top: 17px;
+    padding-bottom: 15px;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    color: beige;
+    align-items: center;
+}
+
+.acordeonTotales button{
+    background-color: rgb(32, 32, 32);
+    color: beige;
+}
+
+button .accordion-button {
+    background-color: rgb(32, 32, 32);
+    color: beige;
+}
+
+.resumenTotal{
+    align-items: center;
+    text-align: center;
+}

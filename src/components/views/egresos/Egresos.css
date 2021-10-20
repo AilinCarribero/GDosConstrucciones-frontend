@@ -1,0 +1,30 @@
+.card-form-egreso
+{
+    position: relative;
+    top: 5%;
+    width: 400px !important;
+    border: 1px ;
+    border-style: hidden;
+    border-radius: 10px;
+    margin: 5px;
+}
+
+.title-form {
+    font-weight: bold;
+    font-size: 20px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+
+.check {
+    margin-bottom: 13px;
+}
+
+.label-title {
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.button-submit{
+    width: 100%;
+}
