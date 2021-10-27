@@ -3,13 +3,15 @@ import { Accordion, Row, Col, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 import { useGetProyectos } from '../../../hooks/useProyectos';
 import { useGetEgresos } from '../../../hooks/useEgresos';
+import { useGetIngresos } from '../../../hooks/useIngresos';
 
 import './Proyectos.css';
 
 const Proyectos = () => {
     const fecha = new Date().toISOString();
     const { proyectos } = useGetProyectos();
-    const { egresos } = useGetEgresos()
+    const { egresos } = useGetEgresos();
+    const { ingresos } = useGetIngresos();
     const [totales, setTotales] = useState({
         egresos: 0,
         ingresos: 0,
@@ -25,92 +27,10 @@ const Proyectos = () => {
         MIngreso: 0
     })
 
-    const resumenContableProyectos = () => {
-        let auxTotalCosto = 0;
-        let auxTotalVenta = 0;
-        let auxTotalEgresos = 0;
-        let auxTotalIngresos = 0;
-        let auxPPE = 0;
-        let auxPPI = 0;
-        let auxDE = 0;
-        let auxDI = 0;
-        let auxME = 0;
-        let auxMI = 0;
-
-        if (proyectos.length > 0) {
-            proyectos.map(proyecto => {
-                if (proyecto.id_centro_costo == '2') {
-                    auxTotalCosto += parseFloat(proyecto.costo);
-                    auxTotalVenta += parseFloat(proyecto.venta);
-                }
-                if (proyecto.id_unidad_negocio == '1') {
-                    egresos.map(egreso => {
-                        if (egreso.id_proyecto == proyecto.id_proyecto) {
-                            auxPPE += parseFloat(egreso.valor_pago);
-                        }
-                    });
-                    /*ingresos.map(ingreso => {
-                        if(ingreso.id_proyecto == proyecto.id_proyecto){
-                            auxPPI += parseFloat(ingreso.valor_pago);
-                        }
-                    });*/
-                }
-                if (proyecto.id_unidad_negocio == '2') {
-                    egresos.map(egreso => {
-                        if (egreso.id_proyecto == proyecto.id_proyecto) {
-                            auxDE += parseFloat(egreso.valor_pago);
-                        }
-                    });
-                    /*ingresos.map(ingreso => {
-                        if(ingreso.id_proyecto == proyecto.id_proyecto){
-                            auxDI += parseFloat(ingreso.valor_pago);
-                        }
-                    });*/
-                }
-                if (proyecto.id_unidad_negocio == '3') {
-                    egresos.map(egreso => {
-                        if (egreso.id_proyecto == proyecto.id_proyecto) {
-                            auxME += parseFloat(egreso.valor_pago);
-                        }
-                    });
-                    /*ingresos.map(ingreso => {
-                        if(ingreso.id_proyecto == proyecto.id_proyecto){
-                            auxMI += parseFloat(ingreso.valor_pago);
-                        }
-                    });*/
-                }
-            })
-        } else {
-            auxTotalCosto = proyectos.costo;
-            auxTotalVenta = proyectos.venta;
-        }
-
-        egresos.map(egreso => {
-            if (egreso.fecha_diferido_pago < fecha) {
-                auxTotalEgresos += parseFloat(egreso.valor_pago);
-            }
-        })
-
-        setTotales({
-            costos: auxTotalCosto,
-            ventas: auxTotalVenta,
-            egresos: auxTotalEgresos,
-            ingresos: auxTotalIngresos
-        })
-        setTotalesUN({
-            PPEgreso: auxPPE,
-            PPIngreso: auxPPI,
-            DEgreso: auxDE,
-            DIngreso: auxDI,
-            MEgreso: auxME,
-            MIngreso: auxMI
-        })
-    }
-
     const egresosProyecto = (id_proyecto) => {
         let auxEgresosProyecto = 0;
 
-        egresos.map(egreso => {
+        egresos.forEach(egreso => {
             if (egreso.id_proyecto == id_proyecto) {
                 auxEgresosProyecto += parseFloat(egreso.valor_pago);
             }
@@ -119,8 +39,110 @@ const Proyectos = () => {
         return (auxEgresosProyecto)
     }
 
+    const ingresosProyecto = (id_proyecto) => {
+        let auxIngresosProyecto = 0;
+
+        ingresos.map(ingreso => {
+            if (ingreso.id_proyecto == id_proyecto) {
+                auxIngresosProyecto += parseFloat(ingreso.valor_cobro);
+            }
+        })
+
+        return (auxIngresosProyecto)
+    }
+
     useEffect(() => {
+        const resumenContableProyectos = () => {
+            let auxTotalCosto = 0;
+            let auxTotalVenta = 0;
+            let auxTotalEgresos = 0;
+            let auxTotalIngresos = 0;
+            let auxPPE = 0;
+            let auxPPI = 0;
+            let auxDE = 0;
+            let auxDI = 0;
+            let auxME = 0;
+            let auxMI = 0;
+            
+            //Reparto los ingresos y los egresos correspondientes a cada area
+            if (proyectos.length > 0) {
+                proyectos.forEach(proyecto => {
+                    console.log(fecha);
+                    console.log(egresos);
+                    if (proyecto.id_centro_costo == '2') {
+                        auxTotalCosto += parseFloat(proyecto.costo);
+                        auxTotalVenta += parseFloat(proyecto.venta);
+                    }
+                    if (proyecto.id_unidad_negocio == '1') {
+                        egresos.forEach(egreso => {
+                            if (egreso.id_proyecto == proyecto.id_proyecto ) {
+                                if(egreso.fecha_diferido_pago < fecha || egreso.fecha_pago < fecha){
+                                    auxPPE += parseFloat(egreso.valor_pago);
+                                    auxTotalEgresos += parseFloat(egreso.valor_pago);
+                                }
+                            }
+                        });
+                        ingresos.forEach(ingreso => {
+                            if(ingreso.id_proyecto == proyecto.id_proyecto){
+                                auxPPI += parseFloat(ingreso.valor_cobro);
+                            }
+                        });
+                    }
+                    if (proyecto.id_unidad_negocio == '2') {
+                        egresos.forEach(egreso => {
+                            if (egreso.id_proyecto == proyecto.id_proyecto && egreso.fecha_diferido_pago < fecha) {
+                                auxDE += parseFloat(egreso.valor_pago);
+                                auxTotalEgresos += parseFloat(egreso.valor_pago);
+                            }
+                        });
+                        ingresos.forEach(ingreso => {
+                            if(ingreso.id_proyecto == proyecto.id_proyecto){
+                                auxDI += parseFloat(ingreso.valor_cobro);
+                            }
+                        });
+                    }
+                    if (proyecto.id_unidad_negocio == '3') {
+                        egresos.forEach(egreso => {
+                            if (egreso.id_proyecto == proyecto.id_proyecto && egreso.fecha_diferido_pago < fecha) {
+                                auxME += parseFloat(egreso.valor_pago);
+                                auxTotalEgresos += parseFloat(egreso.valor_pago);
+                            }
+                        });
+                        ingresos.forEach(ingreso => {
+                            if(ingreso.id_proyecto == proyecto.id_proyecto){
+                                auxMI += parseFloat(ingreso.valor_cobro);
+                            }
+                        });
+                    }
+                })
+            } else {
+                auxTotalCosto = proyectos.costo;
+                auxTotalVenta = proyectos.venta;
+            }
+    
+            /*egresos.forEach(egreso => {
+                if (egreso.fecha_diferido_pago < fecha) {
+                    auxTotalEgresos += parseFloat(egreso.valor_pago);
+                }
+            })*/
+    
+            setTotales({
+                costos: auxTotalCosto,
+                ventas: auxTotalVenta,
+                egresos: auxTotalEgresos,
+                ingresos: auxTotalIngresos
+            })
+            setTotalesUN({
+                PPEgreso: auxPPE,
+                PPIngreso: auxPPI,
+                DEgreso: auxDE,
+                DIngreso: auxDI,
+                MEgreso: auxME,
+                MIngreso: auxMI
+            })
+        }
         resumenContableProyectos();
+        //eslint-disable-next-line
     }, [proyectos, egresos])
 
     return (<>
@@ -168,7 +190,7 @@ const Proyectos = () => {
                                                 <Col xs={12} md={6}><p> Valor de venta: {proyecto.venta}</p></Col>
                                                 <Col xs={12} md={6}><p> Valor de costo: {proyecto.costo}</p></Col>
                                                 <Col xs={12} md={6}><p> Egresos: {egresosProyecto(proyecto.id_proyecto)} </p></Col>
-                                                <Col xs={12} md={6}><p> Ingresos: { } </p></Col>
+                                                <Col xs={12} md={6}><p> Ingresos: {ingresosProyecto(proyecto.id_proyecto)} </p></Col>
                                             </Row>
                                         </Accordion.Body>
                                     </Accordion.Item>

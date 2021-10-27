@@ -11,5 +11,6 @@ export const getAnalisisCostos = async () => {
 export const getDetalleAnalisisCostos = async () => {
     console.log(servisTokenConfig)
     const response = await axios.get(API+'analisis-costos/detalles', servisTokenConfig );
+    console.log(response.data);
     return response.data;
 }

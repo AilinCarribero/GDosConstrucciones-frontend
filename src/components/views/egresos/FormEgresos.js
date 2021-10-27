@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { Card, Button, Row, FloatingLabel, Form, Col } from 'react-bootstrap';
 
+//Hooks
 import { useGetFormasPagos } from '../../../hooks/useFormasPagos';
 import { useGetProyectos } from '../../../hooks/useProyectos';
 import { useGetAnalisisCostos, useDetalleAnalisisCosto } from '../../../hooks/useAnalisisCostos';
 import { useUser } from '../../../hooks/useUser';
-import { insertEgreso } from '../../../services/apiEgresos';
 import { useGetComprobantesPago } from '../../../hooks/useComprobantePago';
+
+//Servicios
+import { insertEgreso } from '../../../services/apiEgresos';
 
 import './Egresos.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -54,13 +57,13 @@ const FormEgresos = () => {
         }))
 
         //Si se selecciono un proyecto mostrar el select de analisisCostos
-        if(targetName == 'proyecto'){
+        if(targetName === 'proyecto'){
             setShowAC( showAC ? false : true);
         }
 
         //Si se selecciono analisis costos y ...
-        if (targetName == 'id_analisis_costo') {
-            analisisCostos.map((analisisCosto) => {
+        if (targetName === 'id_analisis_costo') {
+            analisisCostos.forEach((analisisCosto) => {
                 if (analisisCosto.id_analisis_costo == targetValue) {
                     setShowDetalleAC(analisisCosto.requiere_detalle === 1 ? true : false);//... requiere detalle mostrara el cambo para agregar el detalle
                     setShowDAC(analisisCosto.id_centro_costo === 1 ? true : false);//... pertence a un AC de CCC entonces mostrara para elegir el detalle del AC de CCC
@@ -69,11 +72,11 @@ const FormEgresos = () => {
         }
 
         //Si se selecciono una forma de pago y...
-        if (targetName == 'id_forma_pago') {
-            formasPagos.map((formaPago) => {
+        if (targetName === 'id_forma_pago') {
+            formasPagos.forEach((formaPago) => {
                 if (formaPago.id_forma_pago == targetValue) {
                     /* La forma de pago mediante tarjeta de credito se maneja diferente al resto */
-                    setShowCuotas(formaPago.forma_pago == 'Tarjeta de Credito' ? true : false) //... es tarjeta de credito se debe mostrar la seleccion de cuotas
+                    setShowCuotas(formaPago.forma_pago === 'Tarjeta de Credito' ? true : false) //... es tarjeta de credito se debe mostrar la seleccion de cuotas
                     setShowFechaDif(formaPago.requiere_f_pago === 1 && formaPago.forma_pago !== 'Tarjeta de Credito' ? true : false) //... requiere una fecha diferente a la actual mostrar otro campo de fecha
                     setShowDetalleFP(formaPago.requiere_d_pago === 1 && formaPago.forma_pago !== 'Tarjeta de Credito' ? true : false)//... requiere un detalle se debe mostrar un input text
                 }
@@ -90,7 +93,7 @@ const FormEgresos = () => {
         if (egreso.cuota > 0) {
             const valorCuota = egreso.valor_pago ? egreso.valor_pago / egreso.cuota : 0;
             
-            if (valorCuota != 0) {
+            if (valorCuota !== 0) {
                 for (let i = 0; i < egreso.cuota; i++) {
                     const mesD = newDate.getMonth() + i + 1
                     auxEgreso[i] = {
@@ -168,7 +171,7 @@ const FormEgresos = () => {
                                         <option value={egreso.id_analisis_costo}></option>
                                         {analisisCostos.map((analisisCosto) => (
                                             proyectos.map((proyecto) => (
-                                                egreso.id_proyecto == proyecto.id_proyecto && analisisCosto.id_centro_costo == proyecto.id_centro_costo &&
+                                                egreso.id_proyecto === proyecto.id_proyecto && analisisCosto.id_centro_costo === proyecto.id_centro_costo &&
                                                 <option key={analisisCosto.id_analisis_costo} value={analisisCosto.id_analisis_costo}>
                                                     {analisisCosto.analisis_costo}
                                                 </option>
@@ -273,7 +276,7 @@ const FormEgresos = () => {
                                                 <option value={egreso.id_comprobante_pago}> </option>
                                                 {
                                                     comprobantePago.map((comprobante) => (
-                                                        egreso.comprobante == comprobante.nombre_comprobante &&
+                                                        egreso.comprobante === comprobante.nombre_comprobante &&
                                                         <option key={comprobante.id_comprobante_pago} value={comprobante.id_comprobante_pago}>
                                                             {comprobante.tipo_comprobante}
                                                         </option>

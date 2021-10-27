@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Offcanvas, Nav, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 import './Sidenav.css';
 import * as Icons from 'react-bootstrap-icons'
@@ -21,9 +22,11 @@ const Sidenav = () => {
       </Offcanvas.Header>
       <Offcanvas.Body>
         <Nav className="justify-content-end flex-grow-1 pe-3">
-          <Nav.Link to="/">Proyectos</Nav.Link>
-          <Nav.Link to="/">Indices</Nav.Link>
-          <Nav.Link href="/ingresar/egreso">Agregar Egreso</Nav.Link>
+          <Link to="/">Proyectos</Link>
+          <Link to="/">Indices</Link>
+          <Link to="/ingresar/proyecto">Nuevo Proyecto</Link>
+          <Link to="/ingresar/egreso">Agregar Egreso</Link>
+          <Link to="/ingresar/ingreso">Agregar Ingreso</Link>
         </Nav>
       </Offcanvas.Body>
     </Offcanvas>

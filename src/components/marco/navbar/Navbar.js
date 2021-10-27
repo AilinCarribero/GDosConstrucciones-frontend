@@ -19,12 +19,13 @@ const NavbarComponent = () => {
     }
 
     useEffect(() => {
-        renderLogaut()
+        renderLogaut();
+        //eslint-disable-next-line
     }, [user])
 
     return (<>
         <Navbar className="navbar" bg="dark">
-            { user.rango == 'admin' ? <Sidenav /> : '' }
+            { user.rango === 'admin' ? <Sidenav /> : '' }
             <Container>
                 <Navbar.Brand href="/">
                     <img src="/" width="30" height="30" className="d-inline-block align-top text-color" alt="GDos Construcciones"/>

@@ -9,6 +9,6 @@ export const insertEgreso = async (egreso) => {
 }
 
 export const getEgresos = async () => {
-    const response = await axios.get(API+'egresos/list', servisTokenConfig);
+    const response = await axios.get(API+'egresos/', servisTokenConfig);
     return response.data;
 }
