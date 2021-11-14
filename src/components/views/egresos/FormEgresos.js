@@ -7,12 +7,12 @@ import { useGetProyectos } from '../../../hooks/useProyectos';
 import { useGetAnalisisCostos, useDetalleAnalisisCosto } from '../../../hooks/useAnalisisCostos';
 import { useUser } from '../../../hooks/useUser';
 import { useGetComprobantesPago } from '../../../hooks/useComprobantePago';
+import { ToastComponent } from '../../../hooks/useUtils';
 
 //Servicios
 import { insertEgreso } from '../../../services/apiEgresos';
 
 import './Egresos.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 const FormEgresos = () => {
     const { user } = useUser();
@@ -24,8 +24,8 @@ const FormEgresos = () => {
     const { formasPagos } = useGetFormasPagos();
     const { proyectos } = useGetProyectos();
     const { analisisCostos } = useGetAnalisisCostos();
-    const { detalleAC } = useDetalleAnalisisCosto();
     const { comprobantePago } = useGetComprobantesPago();
+    const { detalleAC } = useDetalleAnalisisCosto();
 
     //Datos a enviarse a la api para ingresar/modificar egresos
     const [egreso, setEgreso] = useState({
@@ -33,10 +33,11 @@ const FormEgresos = () => {
         fecha_pago: new Date().toISOString().slice(0, 10),
         id_proyecto: '',
         valor_pago: '',
+        id_forma_pago: '',
         fecha_diferido_pago: '',
         observaciones: '',
         id_comprobante_pago: '',
-        numero_comprobate: ''
+        numero_comprobante: ''
     });
 
     //Eventos para mostrar partes del formulario
@@ -46,6 +47,8 @@ const FormEgresos = () => {
     const [showFechaDif, setShowFechaDif] = useState(false);
     const [showDetalleAC, setShowDetalleAC] = useState(false);
     const [showDetalleFP, setShowDetalleFP] = useState(false);
+
+    const [validated, setValidated] = useState(false);
 
     const handleChangeForm = (e) => {
         const targetName = e.target.name
@@ -57,8 +60,8 @@ const FormEgresos = () => {
         }))
 
         //Si se selecciono un proyecto mostrar el select de analisisCostos
-        if(targetName === 'proyecto'){
-            setShowAC( showAC ? false : true);
+        if (targetName === 'proyecto') {
+            setShowAC(showAC ? false : true);
         }
 
         //Si se selecciono analisis costos y ...
@@ -88,60 +91,83 @@ const FormEgresos = () => {
         e.preventDefault();
         const auxEgreso = [];
 
-        /*En caso de tener cuotas el valor del importe debe dividirse en partes iguales acorde a la cantidad de cuotas seleccionadas 
-        y se debera diferir cada cuota a 30 dias despues de la siguiente */
-        if (egreso.cuota > 0) {
-            const valorCuota = egreso.valor_pago ? egreso.valor_pago / egreso.cuota : 0;
-            
-            if (valorCuota !== 0) {
-                for (let i = 0; i < egreso.cuota; i++) {
-                    const mesD = newDate.getMonth() + i + 1
-                    auxEgreso[i] = {
-                        ...egreso,
-                        cuotaNumero: i,
-                        valor_pago: valorCuota,
-                        fecha_diferido_pago: new Date(año, mesD, dia).toISOString().slice(0, 10)
-                    }
+        const form = e.currentTarget;
 
-                    try {
-                        const egresoRes = await insertEgreso(auxEgreso[i]);
+        if (form.checkValidity() === false) {
+            ToastComponent('warn');
+            e.stopPropagation();
+        }
+        setValidated(true);
+        if (form.checkValidity() === true) {
+            /*En caso de tener cuotas el valor del importe debe dividirse en partes iguales acorde a la cantidad de cuotas seleccionadas 
+            y se debera diferir cada cuota a 30 dias despues de la siguiente */
+            if (egreso.cuota > 0) {
+                const valorCuota = egreso.valor_pago ? egreso.valor_pago / egreso.cuota : 0;
 
-                        console.log(egresoRes);
-                    } catch (error) {
-                        console.log(error);
+                if (valorCuota !== 0) {
+                    for (let i = 0; i < egreso.cuota; i++) {
+                        const mesD = newDate.getMonth() + i + 1
+                        auxEgreso[i] = {
+                            ...egreso,
+                            cuotaNumero: i,
+                            valor_pago: valorCuota,
+                            fecha_diferido_pago: new Date(año, mesD, dia).toISOString().slice(0, 10)
+                        }
+
+                        try {
+                            const resEgreso = await insertEgreso(auxEgreso[i]);
+
+                            console.log(resEgreso);
+                            if (!resEgreso.data.errno && (resEgreso.status == 200 || resEgreso.statusText == 'Ok')) {
+                                ToastComponent('success');
+                            } else {
+                                ToastComponent('error');
+                            }
+                        } catch (error) {
+                            console.log(error);
+                            ToastComponent('error');
+                        }
                     }
                 }
-            }
-        } else {
-            //Si no hay cuotas el proceso de guardado es normal
-            try {
-                const egresoRes = await insertEgreso(egreso);
+            } else {
+                //Si no hay cuotas el proceso de guardado es normal
+                try {
+                    const resEgreso = await insertEgreso(egreso);
 
-                console.log(egresoRes);
-            } catch (error) {
-                console.log(error);
+                    console.log(resEgreso);
+                    if (!resEgreso.data.errno && (resEgreso.status == 200 || resEgreso.statusText == 'Ok')) {
+                        ToastComponent('success');
+                    } else {
+                        ToastComponent('error');
+                    }
+                } catch (error) {
+                    console.log(error);
+                    ToastComponent('error');
+                }
             }
+
+            //En caso de tener algun elemento extra mostrandose se vuelve a ocular
+            if (showCuotas === true) setShowCuotas(false);
+            if (showDetalleAC === true) setShowDetalleAC(false);
+            if (showDetalleFP === true) setShowDetalleFP(false);
+            if (showFechaDif === true) setShowFechaDif(false);
+            if (showDAC === true) setShowDAC(false);
+            if (showAC === true) setShowDAC(false);
+
+            //Los campos se vacian 
+            setEgreso({
+                id_user: user.id,
+                fecha_pago: new Date().toISOString().slice(0, 10),
+                id_proyecto: '',
+                valor_pago: '',
+                id_forma_pago: '',
+                fecha_diferido_pago: '',
+                observaciones: '',
+                id_comprobante_pago: '',
+                numero_comprobante: '',
+
+            })
         }
-
-        //En caso de tener algun elemento extra mostrandose se vuelve a ocular
-        if (showCuotas === true) setShowCuotas(false);
-        if (showDetalleAC === true) setShowDetalleAC(false);
-        if (showDetalleFP === true) setShowDetalleFP(false);
-        if (showFechaDif === true) setShowFechaDif(false);
-        if (showDAC === true) setShowDAC(false);
-        if (showAC === true) setShowDAC(false);
-
-        //Los campos se vacian 
-        setEgreso({
-            id_user: (window.localStorage.getItem('loggedNoteAppUser') ? JSON.parse(window.localStorage.getItem('loggedNoteAppUser')).id : null),
-            fecha_pago: new Date().toISOString().slice(0, 10),
-            id_proyecto: '',
-            valor_pago: '',
-            fecha_diferido_pago: '',
-            observaciones: '',
-            id_comprobante_pago: '',
-            numero_comprobate: ''
-        })
     }
 
     return (
@@ -150,11 +176,11 @@ const FormEgresos = () => {
                 <Card className="text-center card-form-egreso">
                     <Card.Header className="title-form" >Registre el gasto realizado</Card.Header>
                     <Card.Body>
-                        <Form onSubmit={handleSubmit} >
+                        <Form noValidate validated={validated} onSubmit={handleSubmit} >
                             <Form.Group className="mb-3" >
                                 <FloatingLabel label="Eligue el proyecto">
-                                    <Form.Select onChange={handleChangeForm} name="id_proyecto" >
-                                        <option value={egreso.id_proyecto}> </option>
+                                    <Form.Select onChange={handleChangeForm} name="id_proyecto" value={egreso.id_proyecto} required >
+                                        <option value=""> </option>
                                         {
                                             proyectos.map((proyecto) => (
                                                 <option key={proyecto.id_proyecto} value={proyecto.id_proyecto}>
@@ -167,8 +193,8 @@ const FormEgresos = () => {
                             </Form.Group>
                             <Form.Group className="mb-3" >
                                 <FloatingLabel label="Analisis de Costo">
-                                    <Form.Select onChange={handleChangeForm} name="id_analisis_costo">
-                                        <option value={egreso.id_analisis_costo}></option>
+                                    <Form.Select onChange={handleChangeForm} name="id_analisis_costo" value={egreso.id_analisis_costo} required >
+                                        <option value=""></option>
                                         {analisisCostos.map((analisisCosto) => (
                                             proyectos.map((proyecto) => (
                                                 egreso.id_proyecto === proyecto.id_proyecto && analisisCosto.id_centro_costo === proyecto.id_centro_costo &&
@@ -183,8 +209,8 @@ const FormEgresos = () => {
                             {showDAC &&
                                 <Form.Group className="mb-3" >
                                     <FloatingLabel label="Detalle del Analisis de Costo">
-                                        <Form.Select onChange={handleChangeForm} name="id_detalle_ac">
-                                            <option value={egreso.id_detalle_ac}></option>
+                                        <Form.Select onChange={handleChangeForm} name="id_detalle_ac" value={egreso.id_detalle_ac} required>
+                                            <option value=""></option>
                                             {analisisCostos.map((analisisCosto) => (
                                                 egreso.id_analisis_costo == analisisCosto.id_analisis_costo &&
                                                 detalleAC.map((detalleac) => (
@@ -200,8 +226,8 @@ const FormEgresos = () => {
                             }
                             <Form.Group className="mb-3" >
                                 <FloatingLabel label="Forma en que se realizo el pago">
-                                    <Form.Select onChange={handleChangeForm} name="id_forma_pago">
-                                        <option value={egreso.id_forma_pago}></option>
+                                    <Form.Select onChange={handleChangeForm} name="id_forma_pago" value={egreso.id_forma_pago} required>
+                                        <option value=""></option>
                                         {formasPagos.map((formaPago) => (
                                             <option key={formaPago.id_forma_pago} value={formaPago.id_forma_pago}>
                                                 {formaPago.forma_pago}
@@ -212,12 +238,12 @@ const FormEgresos = () => {
                             </Form.Group>
                             <Form.Group className="mb-3">
                                 <FloatingLabel controlId="floatingInputGrid" label="Fecha Del Pago">
-                                    <Form.Control onChange={handleChangeForm} name="fecha_pago" type="date" value={egreso.fecha_pago} />
+                                    <Form.Control onChange={handleChangeForm} name="fecha_pago" type="date" value={egreso.fecha_pago} required />
                                 </FloatingLabel>
                             </Form.Group>
                             <Form.Group className="mb-3">
                                 <FloatingLabel label="Importe">
-                                    <Form.Control onChange={handleChangeForm} name="valor_pago" type="number" value={egreso.valor_pago} />
+                                    <Form.Control onChange={handleChangeForm} name="valor_pago" type="number" value={egreso.valor_pago} required />
                                 </FloatingLabel>
                             </Form.Group>
                             {showCuotas &&
@@ -241,21 +267,21 @@ const FormEgresos = () => {
                             {showFechaDif &&
                                 <Form.Group className="mb-3">
                                     <FloatingLabel controlId="floatingInputGrid" label="Fecha Diferido">
-                                        <Form.Control onChange={handleChangeForm} name="fecha_diferido_pago" type="date" value={egreso.fecha_diferido_pago} />
+                                        <Form.Control onChange={handleChangeForm} name="fecha_diferido_pago" type="date" value={egreso.fecha_diferido_pago} required />
                                     </FloatingLabel>
                                 </Form.Group>
                             }
                             {showDetalleAC &&
                                 <Form.Group className="mb-3">
                                     <FloatingLabel controlId="floatingInputGrid" label="Detalle de Analisis de Costo">
-                                        <Form.Control onChange={handleChangeForm} name="observaciones" type="text" placeholder="" />
+                                        <Form.Control onChange={handleChangeForm} name="observaciones" type="text" value={egreso.observaciones} required />
                                     </FloatingLabel>
                                 </Form.Group>
                             }
                             {showDetalleFP &&
                                 <Form.Group className="mb-3">
                                     <FloatingLabel controlId="floatingInputGrid" label="Detalle de Forma de Pago">
-                                        <Form.Control onChange={handleChangeForm} name="observaciones" type="text" placeholder="" />
+                                        <Form.Control onChange={handleChangeForm} name="observaciones" type="text" value={egreso.observaciones} required />
                                     </FloatingLabel>
                                 </Form.Group>
                             }
@@ -263,17 +289,17 @@ const FormEgresos = () => {
                                 <Form.Label className="label-title">Comprobante de Pago</Form.Label>
                                 <Row key={`inline-radio`} className="check">
                                     <Col xs={4} sm={4} >
-                                        <Form.Check inline onChange={handleChangeForm} label="Factura" name="comprobante" value="Factura" type="radio" />
+                                        <Form.Check inline onChange={handleChangeForm} label="Factura" name="comprobante" value="Factura" type="radio" required />
                                     </Col>
                                     <Col xs={8} sm={8} >
-                                        <Form.Check inline onChange={handleChangeForm} label="Comprobante de Pago" name="comprobante"  value="Comprobante de Pago" type="radio" />
+                                        <Form.Check inline onChange={handleChangeForm} label="Comprobante de Pago" name="comprobante" value="Comprobante de Pago" type="radio" required />
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col xs={4} sm={4}>
                                         <FloatingLabel label="Tipo">
-                                            <Form.Select onChange={handleChangeForm} name="id_comprobante_pago" >
-                                                <option value={egreso.id_comprobante_pago}> </option>
+                                            <Form.Select onChange={handleChangeForm} name="id_comprobante_pago" value={egreso.id_comprobante_pago} required >
+                                                <option value=""> </option>
                                                 {
                                                     comprobantePago.map((comprobante) => (
                                                         egreso.comprobante === comprobante.nombre_comprobante &&
@@ -287,7 +313,7 @@ const FormEgresos = () => {
                                     </Col>
                                     <Col xs={8} sm={8}>
                                         <FloatingLabel controlId="floatingInputGrid" label="N°">
-                                            <Form.Control onChange={handleChangeForm} name="numero_comprobante" type="number" placeholder="" value={egreso.numero_comprobante} />
+                                            <Form.Control onChange={handleChangeForm} name="numero_comprobante" type="number" value={egreso.numero_comprobante} required />
                                         </FloatingLabel>
                                     </Col>
                                 </Row>

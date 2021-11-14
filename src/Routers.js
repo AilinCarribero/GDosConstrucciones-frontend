@@ -9,6 +9,10 @@ import FormIngresos from './components/views/ingresos/FormIngresos';
 import NavbarComponent from './components/marco/navbar/Navbar';
 import Proyectos from './components/views/proyectos/Proyectos';
 import FormProyectos from './components/views/proyectos/FormProyectos';
+import FormUsuarios from './components/views/usuarios/FormUsuarios';
+import Usuarios from './components/views/usuarios/Usuarios';
+import Egresos from './components/views/egresos/Egresos';
+import Ingresos from './components/views/ingresos/Ingresos';
 
 //Hooks
 import { useUser } from './hooks/useUser';
@@ -38,6 +42,10 @@ const Routers = () => {
                             <Route exact path="/ingresar/egreso" component={FormEgresos} />
                             <Route exact path="/ingresar/ingreso" component={FormIngresos} />
                             <Route exact path="/ingresar/proyecto" component={FormProyectos} />
+                            <Route exact path="/ingresar/usuario" component={FormUsuarios} />
+                            <Route exact path="/usuarios" component={Usuarios} />
+                            <Route exact path="/egresos/:id" component={Egresos} />
+                            <Route exact path="/ingresos/:id" component={Ingresos} />
                         </>
                         : 
                         <Redirect to="/" /> 

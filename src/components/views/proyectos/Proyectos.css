@@ -23,3 +23,32 @@ button .accordion-button {
     align-items: center;
     text-align: center;
 }
+
+.card-form-proyectos
+{
+    position: relative;
+    top: 5%;
+    width: 400px !important;
+    border: 1px ;
+    border-style: hidden;
+    border-radius: 10px;
+    margin: 5px;
+}
+
+.label-title-proyecto {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.button-ver-mas{
+    border-color: transparent;
+    background-color: transparent;
+}
+
+.icon-detalle{
+    color: black;
+}
+
+.icon-detalle:hover{
+    color: grey;
+}

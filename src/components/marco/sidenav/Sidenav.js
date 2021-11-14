@@ -13,20 +13,22 @@ const Sidenav = () => {
 
   return (<>
     <Button className="button-menu" variant="outline-light" onClick={handleShow}>
-      <Icons.List color="white" size="30px"  />
+      <Icons.List color="white" size="32px"  />
     </Button>
 
-    <Offcanvas show={show} onHide={handleClose}>
+    <Offcanvas className="menu" show={show} onHide={handleClose}>
       <Offcanvas.Header closeButton>
         <Offcanvas.Title>Menu</Offcanvas.Title>
       </Offcanvas.Header>
       <Offcanvas.Body>
         <Nav className="justify-content-end flex-grow-1 pe-3">
-          <Link to="/">Proyectos</Link>
-          <Link to="/">Indices</Link>
-          <Link to="/ingresar/proyecto">Nuevo Proyecto</Link>
-          <Link to="/ingresar/egreso">Agregar Egreso</Link>
-          <Link to="/ingresar/ingreso">Agregar Ingreso</Link>
+          <Link className="text-link fondo-link" to="/">Proyectos</Link>
+          <Link className="text-link fondo-link" to="/">Indices</Link>
+          <Link className="text-link fondo-link" to="/usuarios">Usuarios</Link>
+          <Link className="text-link fondo-link" to="/ingresar/proyecto">Nuevo Proyecto</Link>
+          <Link className="text-link fondo-link" to="/ingresar/egreso">Nuevo Egreso</Link>
+          <Link className="text-link fondo-link" to="/ingresar/ingreso">Nuevo Ingreso</Link>
+          <Link className="text-link fondo-link" to="/ingresar/usuario">Nuevo Usuario</Link>
         </Nav>
       </Offcanvas.Body>
     </Offcanvas>

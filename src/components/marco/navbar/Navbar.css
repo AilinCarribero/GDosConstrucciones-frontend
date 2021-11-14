@@ -7,6 +7,21 @@
 }
 
 .navbar {
-    width: 103%;
+    width: 100vw;
     align-items: center;
+}
+
+.icon-salida{
+    color: white;
+}
+
+.icon-salida:hover{
+    color: gray;
+}
+
+.img{
+    box-shadow: 20px white ;
+    width: 100px ;
+    margin-left: -30px;
+    height: 40px;
 }

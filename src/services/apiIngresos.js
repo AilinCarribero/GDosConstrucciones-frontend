@@ -12,3 +12,8 @@ export const getIngresos = async () => {
     const response = await axios.get(API+'ingresos/', servisTokenConfig);
     return response.data;
 }
+
+export const getIngresosId = async (id) => {
+    const response = await axios.get(API+`ingresos/${id}`, servisTokenConfig);
+    return response.data;
+}

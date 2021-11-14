@@ -1,3 +1,31 @@
 .button-menu {
     margin-left: 20px;
+    border-color: transparent;
+}
+
+.button-menu:hover{
+    background-color: grey;
+    border-color: transparent;
+}
+
+.text-link{
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    text-decoration:none;
+}
+
+.text-link:hover{
+    color: gray;
+}
+
+.fondo-link{
+    padding: 10px 0;
+    border-bottom-style: solid !important;
+    border-bottom: 1px;
+    border-bottom-color: bisque;
+}
+
+.menu{
+    background-color: #262625;
 }

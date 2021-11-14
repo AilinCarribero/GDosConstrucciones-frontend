@@ -1,4 +1,4 @@
-.card-form-ingreso
+.card-form-user
 {
     position: relative;
     top: 5%;
@@ -9,14 +9,11 @@
     margin: 5px;
 }
 
-.acordion{
-    margin-top: 30px !important;
+.table-user{
+    margin-top: 40px;
 }
 
-.acordion-title{
-    font-size: 13px;
-}
-
-.acordion-title-number{
-    font-size: 12px;
+.button-accion{
+    background-color: transparent;
+    border-color: transparent;
 }
