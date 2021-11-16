@@ -52,3 +52,7 @@ button .accordion-button {
 .icon-detalle:hover{
     color: grey;
 }
+
+.text_select{
+    color: black;
+}

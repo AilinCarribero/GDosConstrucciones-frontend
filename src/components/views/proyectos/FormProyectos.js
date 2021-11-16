@@ -114,7 +114,7 @@ const FormProyectos = () => {
                                                 <option value="" > </option>
                                                 {
                                                     unidadNegocio.map((unidad_negocio) => (
-                                                        <option key={unidad_negocio.id_unidad_negocio} value={unidad_negocio.id_unidad_negocio}>
+                                                        <option className="text_select" key={unidad_negocio.id_unidad_negocio} value={unidad_negocio.id_unidad_negocio}>
                                                             {unidad_negocio.siglas_uc}
                                                         </option>
                                                     ))
