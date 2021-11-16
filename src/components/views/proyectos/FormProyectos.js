@@ -88,7 +88,7 @@ const FormProyectos = () => {
         <Row className="justify-content-center">
             <Col xs="auto" sm="auto" md="auto" lg="auto" xl="auto" xxl="auto" >
                 <Card className="text-center card-form-proyectos">
-                    <Card.Header className="title-form" >Registre el ingreso</Card.Header>
+                    <Card.Header className="title-form" >Ingrese un Nuevo Proyecto</Card.Header>
                     <Card.Body>
                         <Form noValidate validated={validated} onSubmit={handleSubmitForm} >
                             <Form.Group className="mb-3" >
@@ -114,7 +114,7 @@ const FormProyectos = () => {
                                                 <option value="" > </option>
                                                 {
                                                     unidadNegocio.map((unidad_negocio) => (
-                                                        <option className="text_select" key={unidad_negocio.id_unidad_negocio} value={unidad_negocio.id_unidad_negocio}>
+                                                        <option key={unidad_negocio.id_unidad_negocio} value={unidad_negocio.id_unidad_negocio}>
                                                             {unidad_negocio.siglas_uc}
                                                         </option>
                                                     ))
