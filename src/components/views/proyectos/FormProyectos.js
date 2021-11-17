@@ -61,9 +61,9 @@ const FormProyectos = () => {
         if(form.checkValidity() === true){
             if(!proyecto.fecha_f_proyecto){
                     auxProyecto = {
-                            ...proyecto,
-                            fecha_f_proyecto: new Date('3000', mes, dia).toISOString().slice(0, 10)
-                        }
+                      ...proyecto,
+                      fecha_f_proyecto: new Date(3000, mes, dia).toISOString().slice(0, 10)
+                   }
                 } else {
                     auxProyecto = {...proyecto}
                 }
