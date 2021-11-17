@@ -192,31 +192,31 @@ const Proyectos = () => {
         <div>
             <Row className="resumenTotales">
                 <Col xs={6} md={3} className="resumenTotal">
-                    <h6>Costos: {formatNumber(totales.costos)}</h6>
+                    <h6>Costos: ${formatNumber(totales.costos)}</h6>
                 </Col>
                 <Col xs={6} md={3} className="resumenTotal">
-                    <h6>Venta: {formatNumber(totales.ventas)}</h6>
+                    <h6>Venta: ${formatNumber(totales.ventas)}</h6>
                 </Col>
                 <OverlayTrigger placement="bottom" overlay={
                     <Tooltip>
-                        <p>PP: {formatNumber(totalesUN.PPIngreso)}</p>
-                        <p>D: {formatNumber(totalesUN.DIngreso)}</p>
-                        <p>M: {formatNumber(totalesUN.MIngreso)}</p>
+                        <p>PP: ${formatNumber(totalesUN.PPIngreso)}</p>
+                        <p>D: ${formatNumber(totalesUN.DIngreso)}</p>
+                        <p>M: ${formatNumber(totalesUN.MIngreso)}</p>
                     </Tooltip>
                 }>
                     <Col xs={6} md={3} className="resumenTotal">
-                        <h6>Ingresos: {formatNumber(totales.ingresos)}</h6>
+                        <h6>Ingresos: ${formatNumber(totales.ingresos)}</h6>
                     </Col>
                 </OverlayTrigger>
                 <OverlayTrigger placement="bottom" overlay={
                     <Tooltip>
-                        <p>PP: {formatNumber(totalesUN.PPEgreso)}</p>
-                        <p>D: {formatNumber(totalesUN.DEgreso)}</p>
-                        <p>M: {formatNumber(totalesUN.MEgreso)}</p>
+                        <p>PP: ${formatNumber(totalesUN.PPEgreso)}</p>
+                        <p>D: ${formatNumber(totalesUN.DEgreso)}</p>
+                        <p>M: ${formatNumber(totalesUN.MEgreso)}</p>
                     </Tooltip>
                 }>
                     <Col xs={6} md={3} className="resumenTotal">
-                        <h6>Egresos: {formatNumber(totales.egresos)}</h6>
+                        <h6>Egresos: ${formatNumber(totales.egresos)}</h6>
                     </Col>
                 </OverlayTrigger>
             </Row>
@@ -234,13 +234,13 @@ const Proyectos = () => {
                                                     <Col xs={12} md={6}>
                                                         <Row>
                                                             <Col xs={1} md={1}></Col>
-                                                            <Col xs={11} md={11}><p> Venta: {formatNumber(proyecto.venta)}</p></Col>
+                                                            <Col xs={11} md={11}><p> Venta: ${formatNumber(proyecto.venta)}</p></Col>
                                                         </Row>
                                                     </Col>
                                                     <Col xs={12} md={6}>
                                                         <Row>
                                                             <Col xs={1} md={1}></Col>
-                                                            <Col xs={11} md={11}><p> Costo: {formatNumber(proyecto.costo)}</p></Col>
+                                                            <Col xs={11} md={11}><p> Costo: ${formatNumber(proyecto.costo)}</p></Col>
                                                         </Row>
                                                     </Col>
                                                 </>}
@@ -249,7 +249,7 @@ const Proyectos = () => {
                                                         <Col xs={1} md={1}>
                                                             <Link to={`/egresos/${proyecto.id_proyecto}`}> <Icons.ArchiveFill className="icon-detalle" /> </Link>
                                                         </Col>
-                                                        <Col xs={11} md={11}><p> Egresos: {formatNumber(egresosProyecto(proyecto.id_proyecto))} </p></Col>
+                                                        <Col xs={11} md={11}><p> Egresos: ${formatNumber(egresosProyecto(proyecto.id_proyecto))} </p></Col>
                                                     </Row>
                                                 </Col>
                                                 <Col xs={12} md={6}>
@@ -257,7 +257,7 @@ const Proyectos = () => {
                                                         <Col xs={1} md={1}>
                                                             <Link to={`/ingresos/${proyecto.id_proyecto}`}> <Icons.ArchiveFill className="icon-detalle" /> </Link>
                                                         </Col>
-                                                        <Col xs={11} md={11}><p> Ingresos: {formatNumber(ingresosProyecto(proyecto.id_proyecto))} </p></Col>
+                                                        <Col xs={11} md={11}><p> Ingresos: ${formatNumber(ingresosProyecto(proyecto.id_proyecto))} </p></Col>
                                                     </Row>
                                                 </Col>
                                             </Row>
