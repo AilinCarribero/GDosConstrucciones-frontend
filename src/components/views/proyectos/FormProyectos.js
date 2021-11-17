@@ -59,12 +59,20 @@ const FormProyectos = () => {
 
         if(form.checkValidity() === true){
             try {
+                if(!proyecto.fecha_f_proyecto){
+                    const añoF = newDate.getFullYear() + 100;
+                     auxProyecto = {
+                            ...proyecto,
+                            fecha_f_proyecto: new Date(añoF, mes, dia).toISOString().slice(0, 10)
+                        }
+                }
+                
                 const resProyecto = await insertProyecto(proyecto);
     
                 console.log(resProyecto);
                 if(!resProyecto.data.errno && resProyecto.status == 200){
                     ToastComponent('success');
-
+                    
                     setProyecto({
                         id_centro_costo: '',
                         id_unidad_negocio: '',
