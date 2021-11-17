@@ -60,7 +60,6 @@ const FormProyectos = () => {
 
         if(form.checkValidity() === true){
             if(!proyecto.fecha_f_proyecto){
-                    const añoF = newDate.getFullYear() + 100;
                     auxProyecto = {
                             ...proyecto,
                             fecha_f_proyecto: new Date('3000', mes, dia).toISOString().slice(0, 10)
