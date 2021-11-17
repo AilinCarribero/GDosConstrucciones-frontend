@@ -39,8 +39,6 @@ const Home = () => {
 
                 loginContext(userResponse);
 
-                ToastComponent('success');
-
                 history.push("/");
             } else {
                 ToastComponent('error');
