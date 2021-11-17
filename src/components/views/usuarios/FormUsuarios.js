@@ -50,17 +50,18 @@ const FormUsuarios = () => {
                 console.log(resNewUser);
                 if (resNewUser.status == 200 || resNewUser.statusText == 'Ok') {
                     ToastComponent('success');
+
+                    setNewUser({
+                        nombre_apellido: '',
+                        correo: '',
+                        contrasegna: '',
+                        id_rango: newUser.id_rango
+                    })
+                    //setChequed('false');
+                    setValidated(false);
                 } else {
                     ToastComponent('error');
                 }
-
-                setNewUser({
-                    nombre_apellido: '',
-                    correo: '',
-                    contrasegna: '',
-                    id_rango: ''
-                })
-                setChequed('false');
             } catch (error) {
                 console.log(error);
                 ToastComponent('error');
@@ -94,10 +95,10 @@ const FormUsuarios = () => {
                                 <Form.Label>Permisos de Acceso</Form.Label>
                                 <Row key={`inline-radio`} className="check">
                                     <Col xs={4} sm={4} >
-                                        <Form.Check inline onChange={handleChangeForm} label="Administrador" name="id_rango" value="1" type="radio" chequed={chequed} required />
+                                        <Form.Check inline onChange={handleChangeForm} label="Administrador" name="id_rango" value="1" type="radio" required />
                                     </Col>
                                     <Col xs={8} sm={8} >
-                                        <Form.Check inline onChange={handleChangeForm} label="Usuario comun" name="id_rango" value="2" type="radio" chequed={chequed} required />
+                                        <Form.Check inline onChange={handleChangeForm} label="Usuario comun" name="id_rango" value="2" type="radio" required />
                                     </Col>
                                 </Row>
                             </Form.Group>

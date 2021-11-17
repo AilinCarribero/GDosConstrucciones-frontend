@@ -64,20 +64,21 @@ const FormProyectos = () => {
                 console.log(resProyecto);
                 if(!resProyecto.data.errno && resProyecto.status == 200){
                     ToastComponent('success');
+
+                    setProyecto({
+                        id_centro_costo: '',
+                        id_unidad_negocio: '',
+                        cliente: '',
+                        costo: '',
+                        venta: '',
+                        fecha_i_proyecto: new Date().toISOString().slice(0, 10),
+                        fecha_f_proyecto: '',
+                        id_estado: '1'
+                    });
+                    setValidated(false);
                 } else {
                     ToastComponent('error');
                 }
-    
-                setProyecto({
-                    id_centro_costo: '',
-                    id_unidad_negocio: '',
-                    cliente: '',
-                    costo: '',
-                    venta: '',
-                    fecha_i_proyecto: new Date().toISOString().slice(0, 10),
-                    fecha_f_proyecto: '',
-                    id_estado: '1'
-                });
             } catch (error) {
                 console.log(error);
             }

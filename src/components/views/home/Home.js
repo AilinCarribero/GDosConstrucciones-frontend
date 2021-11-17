@@ -6,6 +6,7 @@ import { useUser } from '../../../hooks/useUser';
 import { login } from '../../../services/apiAuth';
 
 import './Home.css';
+import { ToastComponent } from '../../../hooks/useUtils';
 
 const Home = () => {
     const history = useHistory();
@@ -38,11 +39,15 @@ const Home = () => {
 
                 loginContext(userResponse);
 
+                ToastComponent('success');
+
                 history.push("/");
             } else {
+                ToastComponent('error');
                 console.log('Error');
             }
         } catch (error) {
+            ToastComponent();
             console.log(error);
         }
     }

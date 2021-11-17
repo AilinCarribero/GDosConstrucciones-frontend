@@ -98,6 +98,7 @@ const FormEgresos = () => {
             e.stopPropagation();
         }
         setValidated(true);
+
         if (form.checkValidity() === true) {
             /*En caso de tener cuotas el valor del importe debe dividirse en partes iguales acorde a la cantidad de cuotas seleccionadas 
             y se debera diferir cada cuota a 30 dias despues de la siguiente */
@@ -120,6 +121,28 @@ const FormEgresos = () => {
                             console.log(resEgreso);
                             if (!resEgreso.data.errno && (resEgreso.status == 200 || resEgreso.statusText == 'Ok')) {
                                 ToastComponent('success');
+
+                                //En caso de tener algun elemento extra mostrandose se vuelve a ocular
+                                if (showCuotas === true) setShowCuotas(false);
+                                if (showDetalleAC === true) setShowDetalleAC(false);
+                                if (showDetalleFP === true) setShowDetalleFP(false);
+                                if (showFechaDif === true) setShowFechaDif(false);
+                                if (showDAC === true) setShowDAC(false);
+                                if (showAC === true) setShowDAC(false);
+
+                                //Los campos se vacian 
+                                setEgreso({
+                                    id_user: user.id,
+                                    fecha_pago: new Date().toISOString().slice(0, 10),
+                                    id_proyecto: '',
+                                    valor_pago: '',
+                                    id_forma_pago: '',
+                                    fecha_diferido_pago: '',
+                                    observaciones: '',
+                                    id_comprobante_pago: egreso.id_comprobante_pago,
+                                    numero_comprobante: '',
+                                })
+                                setValidated(false);
                             } else {
                                 ToastComponent('error');
                             }
@@ -137,6 +160,28 @@ const FormEgresos = () => {
                     console.log(resEgreso);
                     if (!resEgreso.data.errno && (resEgreso.status == 200 || resEgreso.statusText == 'Ok')) {
                         ToastComponent('success');
+
+                        //En caso de tener algun elemento extra mostrandose se vuelve a ocular
+                        if (showCuotas === true) setShowCuotas(false);
+                        if (showDetalleAC === true) setShowDetalleAC(false);
+                        if (showDetalleFP === true) setShowDetalleFP(false);
+                        if (showFechaDif === true) setShowFechaDif(false);
+                        if (showDAC === true) setShowDAC(false);
+                        if (showAC === true) setShowDAC(false);
+
+                        //Los campos se vacian 
+                        setEgreso({
+                            id_user: user.id,
+                            fecha_pago: new Date().toISOString().slice(0, 10),
+                            id_proyecto: '',
+                            valor_pago: '',
+                            id_forma_pago: '',
+                            fecha_diferido_pago: '',
+                            observaciones: '',
+                            id_comprobante_pago: egreso.id_comprobante_pago,
+                            numero_comprobante: '',
+                        })
+                        setValidated(false);
                     } else {
                         ToastComponent('error');
                     }
@@ -145,28 +190,6 @@ const FormEgresos = () => {
                     ToastComponent('error');
                 }
             }
-
-            //En caso de tener algun elemento extra mostrandose se vuelve a ocular
-            if (showCuotas === true) setShowCuotas(false);
-            if (showDetalleAC === true) setShowDetalleAC(false);
-            if (showDetalleFP === true) setShowDetalleFP(false);
-            if (showFechaDif === true) setShowFechaDif(false);
-            if (showDAC === true) setShowDAC(false);
-            if (showAC === true) setShowDAC(false);
-
-            //Los campos se vacian 
-            setEgreso({
-                id_user: user.id,
-                fecha_pago: new Date().toISOString().slice(0, 10),
-                id_proyecto: '',
-                valor_pago: '',
-                id_forma_pago: '',
-                fecha_diferido_pago: '',
-                observaciones: '',
-                id_comprobante_pago: '',
-                numero_comprobante: '',
-
-            })
         }
     }
 
@@ -252,14 +275,14 @@ const FormEgresos = () => {
                                         <Form.Select onChange={handleChangeForm} name="cuota">
                                             <option></option>
                                             <option value={1}>1 Cuota</option>
-                                            <option value={3}>3 Cuota</option>
-                                            <option value={6}>6 Cuota</option>
-                                            <option value={9}>9 Cuota</option>
-                                            <option value={12}>12 Cuota</option>
-                                            <option value={16}>16 Cuota</option>
-                                            <option value={18}>18 Cuota</option>
-                                            <option value={24}>24 Cuota</option>
-                                            <option value={30}>30 Cuota</option>
+                                            <option value={3}>3 Cuotas</option>
+                                            <option value={6}>6 Cuotas</option>
+                                            <option value={9}>9 Cuotas</option>
+                                            <option value={12}>12 Cuotas</option>
+                                            <option value={16}>16 Cuotas</option>
+                                            <option value={18}>18 Cuotas</option>
+                                            <option value={24}>24 Cuotas</option>
+                                            <option value={30}>30 Cuotas</option>
                                         </Form.Select>
                                     </FloatingLabel>
                                 </Form.Group>

@@ -41,8 +41,8 @@ const FormIngresos = () => {
     const [showDetalle, setShowDetalle] = useState(false);
     const [showCheque, setShowCheque] = useState(false);
     const [showDataCheques, setShowDataCheques] = useState(false);
-    
-    const [ validated, setValidated ] = useState(false);
+
+    const [validated, setValidated] = useState(false);
 
     const handleChangeForm = (e) => {
         const targetName = e.target.name
@@ -124,8 +124,27 @@ const FormIngresos = () => {
                             const resIngreso = await insertIngreso(auxIngreso[i]);
 
                             console.log(resIngreso);
-                            if(!resIngreso.data.errno && (resIngreso.status == 200 || resIngreso.statusText == 'Ok')){
+                            if (!resIngreso.data.errno && (resIngreso.status == 200 || resIngreso.statusText == 'Ok')) {
                                 ToastComponent('success');
+
+                                //En caso de tener algun elemento extra mostrandose se vuelve a ocular
+                                if (showCuotas === true) setShowCuotas(false);
+                                if (showDetalle === true) setShowDetalle(false);
+                                if (showFechaDif === true) setShowFechaDif(false);
+                                if (showDataCheques === true) setShowDataCheques(false);
+                                if (showFC === true) setShowFC(false);
+                                if (showCheque === true) setShowCheque(false);
+
+                                //Los campos se vacian 
+                                setIngreso({
+                                    id_user: user.id,
+                                    fecha_cobro: new Date().toISOString().slice(0, 10),
+                                    id_proyecto: '',
+                                    valor_cobro: '',
+                                    fecha_diferido_cobro: '',
+                                    observaciones: '',
+                                })
+                                setValidated(false);
                             } else {
                                 ToastComponent('error');
                             }
@@ -152,8 +171,27 @@ const FormIngresos = () => {
                         const resIngreso = await insertIngreso(auxIngreso[i]);
 
                         console.log(resIngreso);
-                        if(!resIngreso.data.errno && (resIngreso.status == 200 || resIngreso.statusText == 'Ok')){
+                        if (!resIngreso.data.errno && (resIngreso.status == 200 || resIngreso.statusText == 'Ok')) {
                             ToastComponent('success');
+
+                            //En caso de tener algun elemento extra mostrandose se vuelve a ocular
+                            if (showCuotas === true) setShowCuotas(false);
+                            if (showDetalle === true) setShowDetalle(false);
+                            if (showFechaDif === true) setShowFechaDif(false);
+                            if (showDataCheques === true) setShowDataCheques(false);
+                            if (showFC === true) setShowFC(false);
+                            if (showCheque === true) setShowCheque(false);
+
+                            //Los campos se vacian 
+                            setIngreso({
+                                id_user: user.id,
+                                fecha_cobro: new Date().toISOString().slice(0, 10),
+                                id_proyecto: '',
+                                valor_cobro: '',
+                                fecha_diferido_cobro: '',
+                                observaciones: '',
+                            })
+                            setValidated(false);
                         } else {
                             ToastComponent('error');
                         }
@@ -168,8 +206,27 @@ const FormIngresos = () => {
                     const resIngreso = await insertIngreso(ingreso);
 
                     console.log(resIngreso);
-                    if(!resIngreso.data.errno && (resIngreso.status == 200 || resIngreso.statusText == 'Ok')){
+                    if (!resIngreso.data.errno && (resIngreso.status == 200 || resIngreso.statusText == 'Ok')) {
                         ToastComponent('success');
+
+                        //En caso de tener algun elemento extra mostrandose se vuelve a ocular
+                        if (showCuotas === true) setShowCuotas(false);
+                        if (showDetalle === true) setShowDetalle(false);
+                        if (showFechaDif === true) setShowFechaDif(false);
+                        if (showDataCheques === true) setShowDataCheques(false);
+                        if (showFC === true) setShowFC(false);
+                        if (showCheque === true) setShowCheque(false);
+
+                        //Los campos se vacian 
+                        setIngreso({
+                            id_user: user.id,
+                            fecha_cobro: new Date().toISOString().slice(0, 10),
+                            id_proyecto: '',
+                            valor_cobro: '',
+                            fecha_diferido_cobro: '',
+                            observaciones: '',
+                        })
+                        setValidated(false);
                     } else {
                         ToastComponent('error');
                     }
@@ -178,24 +235,6 @@ const FormIngresos = () => {
                     ToastComponent('error');
                 }
             }
-
-            //En caso de tener algun elemento extra mostrandose se vuelve a ocular
-            if (showCuotas === true) setShowCuotas(false);
-            if (showDetalle === true) setShowDetalle(false);
-            if (showFechaDif === true) setShowFechaDif(false);
-            if (showDataCheques === true) setShowDataCheques(false);
-            if (showFC === true) setShowFC(false);
-            if (showCheque === true) setShowCheque(false);
-
-            //Los campos se vacian 
-            setIngreso({
-                id_user: user.id,
-                fecha_cobro: new Date().toISOString().slice(0, 10),
-                id_proyecto: '',
-                valor_cobro: '',
-                fecha_diferido_cobro: '',
-                observaciones: '',
-            })
         }
     }
 
@@ -207,12 +246,12 @@ const FormIngresos = () => {
                     <Row key={i}>
                         <Col xs={6} sm={6}>
                             <FloatingLabel controlId="floatingInputGrid" label="Fecha Del Cheque">
-                                <Form.Control onChange={handleChangeForm} name={"fechaD" + i} type="date" required/>
+                                <Form.Control onChange={handleChangeForm} name={"fechaD" + i} type="date" required />
                             </FloatingLabel>
                         </Col>
                         <Col xs={6} sm={6}>
                             <FloatingLabel controlId="floatingInputGrid" label="Monto del Cheque">
-                                <Form.Control onChange={handleChangeForm} name={"monto" + i} type="number" required/>
+                                <Form.Control onChange={handleChangeForm} name={"monto" + i} type="number" required />
                             </FloatingLabel>
                         </Col>
                     </Row>
@@ -277,14 +316,14 @@ const FormIngresos = () => {
                                         <Form.Select onChange={handleChangeForm} name="cuota" required>
                                             <option></option>
                                             <option value={1}>1 Cuota</option>
-                                            <option value={3}>3 Cuota</option>
-                                            <option value={6}>6 Cuota</option>
-                                            <option value={9}>9 Cuota</option>
-                                            <option value={12}>12 Cuota</option>
-                                            <option value={16}>16 Cuota</option>
-                                            <option value={18}>18 Cuota</option>
-                                            <option value={24}>24 Cuota</option>
-                                            <option value={30}>30 Cuota</option>
+                                            <option value={3}>3 Cuotas</option>
+                                            <option value={6}>6 Cuotas</option>
+                                            <option value={9}>9 Cuotas</option>
+                                            <option value={12}>12 Cuotas</option>
+                                            <option value={16}>16 Cuotas</option>
+                                            <option value={18}>18 Cuotas</option>
+                                            <option value={24}>24 Cuotas</option>
+                                            <option value={30}>30 Cuotas</option>
                                         </Form.Select>
                                     </FloatingLabel>
                                 </Form.Group>
@@ -292,7 +331,7 @@ const FormIngresos = () => {
                             {showCheque &&
                                 <Form.Group className="mb-3">
                                     <FloatingLabel label="Cantidad de Cheques">
-                                        <Form.Control onChange={handleChangeForm} name="cantCheque" type="number" value={cantCheque} required/>
+                                        <Form.Control onChange={handleChangeForm} name="cantCheque" type="number" value={cantCheque} required />
                                     </FloatingLabel>
                                 </Form.Group>
                             }
