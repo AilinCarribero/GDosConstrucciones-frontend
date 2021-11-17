@@ -50,6 +50,7 @@ const FormProyectos = () => {
     const handleSubmitForm = async (e) => {
         e.preventDefault();
         const form = e.currentTarget;
+        const auxProyecto = []
 
         if (form.checkValidity() === false) {
             ToastComponent('warn');
@@ -61,12 +62,12 @@ const FormProyectos = () => {
             try {
                 if(!proyecto.fecha_f_proyecto){
                     const añoF = newDate.getFullYear() + 100;
-                     const auxProyecto = {
+                    auxProyecto = {
                             ...proyecto,
                             fecha_f_proyecto: new Date(añoF, mes, dia).toISOString().slice(0, 10)
                         }
                 } else {
-                    const auxProyecto = {
+                    auxProyecto = {
                             ...proyecto
                         }
                 }
