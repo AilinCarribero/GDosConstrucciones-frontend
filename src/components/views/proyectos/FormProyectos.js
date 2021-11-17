@@ -63,7 +63,7 @@ const FormProyectos = () => {
                     const añoF = newDate.getFullYear() + 100;
                     auxProyecto = {
                             ...proyecto,
-                            fecha_f_proyecto: new Date(añoF, mes, dia).toISOString().slice(0, 10)
+                            fecha_f_proyecto: new Date('3000', mes, dia).toISOString().slice(0, 10)
                         }
                 } else {
                     auxProyecto = proyecto
