@@ -50,7 +50,7 @@ const FormProyectos = () => {
     const handleSubmitForm = async (e) => {
         e.preventDefault();
         const form = e.currentTarget;
-        const auxProyecto = []
+        const auxProyecto = {};
 
         if (form.checkValidity() === false) {
             ToastComponent('warn');
