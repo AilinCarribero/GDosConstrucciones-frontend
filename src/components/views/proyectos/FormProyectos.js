@@ -59,8 +59,7 @@ const FormProyectos = () => {
         setValidated(true);
 
         if(form.checkValidity() === true){
-            try {
-                if(!proyecto.fecha_f_proyecto){
+            if(!proyecto.fecha_f_proyecto){
                     const añoF = newDate.getFullYear() + 100;
                     auxProyecto = {
                             ...proyecto,
@@ -71,7 +70,8 @@ const FormProyectos = () => {
                             ...proyecto
                         }
                 }
-                
+            
+            try {
                 const resProyecto = await insertProyecto(auxProyecto);
     
                 console.log(resProyecto);
