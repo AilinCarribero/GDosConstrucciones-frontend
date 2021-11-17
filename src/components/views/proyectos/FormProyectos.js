@@ -66,7 +66,7 @@ const FormProyectos = () => {
                             fecha_f_proyecto: new Date('3000', mes, dia).toISOString().slice(0, 10)
                         }
                 } else {
-                    auxProyecto = proyecto
+                    auxProyecto = {...proyecto}
                 }
             
             try {
