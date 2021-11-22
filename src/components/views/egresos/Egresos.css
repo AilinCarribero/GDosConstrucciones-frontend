@@ -1,3 +1,4 @@
+/*Formulario*/
 .card-form-egreso
 {
     position: relative;
@@ -7,6 +8,12 @@
     border-style: hidden;
     border-radius: 10px;
     margin: 5px;
+}
+
+@media only screen and (hover: none) and (pointer: coarse){
+    .mobile-form-egreso{
+        width: 340px !important;
+    }
 }
 
 .title-form {
@@ -29,6 +36,7 @@
     width: 100%;
 }
 
+/*Vista*/
 .acordion{
     margin-top: 30px !important;
 }

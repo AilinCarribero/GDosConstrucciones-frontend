@@ -8,7 +8,6 @@ export const useGetIngresos = () => {
         (async () => {
             const resIngresos = await getIngresos();
             setIngresos(resIngresos);
-            console.log(resIngresos);
         })()
     }, [])
     return { ingresos, setIngresos }
@@ -21,7 +20,6 @@ export const useGetIngresosId = (id) => {
         (async () => {
             const resIngresos = await getIngresosId(id);
             setIngresos(resIngresos);
-            console.log(resIngresos);
         })()
     }, [])
     return { ingresos, setIngresos }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Accordion, Row, Col, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Accordion, Row, Col, OverlayTrigger, Tooltip, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 //Hooks
@@ -8,15 +8,21 @@ import { useGetEgresos } from '../../../hooks/useEgresos';
 import { useGetIngresos } from '../../../hooks/useIngresos';
 import { formatNumber } from '../../../hooks/useUtils';
 
+//Componentes
+
+
 //Css
 import './Proyectos.css';
 import * as Icons from 'react-bootstrap-icons';
+import SpinnerC from '../../utils/spinner/SpinnerC';
 
 const Proyectos = () => {
     const fecha = toString(new Date().toISOString());
     const { proyectos } = useGetProyectos();
     const { egresos } = useGetEgresos();
     const { ingresos } = useGetIngresos();
+
+    const [spinner, setSpinner] = useState(true);
 
     const [totales, setTotales] = useState({
         egresos: 0,
@@ -69,7 +75,7 @@ const Proyectos = () => {
         let auxME = 0;
         let auxMI = 0;
 
-        //Reparto los ingresos y los egresos correspondientes a cada area
+        //Reparte los ingresos y los egresos correspondientes a cada area
         if (proyectos.length > 0) {
             proyectos.map(proyecto => {
                 if (proyecto.id_centro_costo == '2') {
@@ -179,23 +185,37 @@ const Proyectos = () => {
             MEgreso: auxME,
             MIngreso: auxMI
         })
+        setSpinner(false);
     }
 
     useEffect(() => {
         if (proyectos && egresos && ingresos) {
             resumenContableProyectos();
         }
-        //eslint-disable-next-line
     }, [proyectos, egresos, ingresos])
 
     return (<>
         <div>
             <Row className="resumenTotales">
                 <Col xs={6} md={3} className="resumenTotal">
-                    <h6>Costos: ${formatNumber(totales.costos)}</h6>
+                    <Row className="border-right">
+                        <Col xs={12} md={12}>
+                            <h6>Costos: </h6>
+                        </Col>
+                        <Col xs={12} md={12}>
+                            <h6>${formatNumber(totales.costos)}</h6>
+                        </Col>
+                    </Row>
                 </Col>
                 <Col xs={6} md={3} className="resumenTotal">
-                    <h6>Venta: ${formatNumber(totales.ventas)}</h6>
+                    <Row className="border-right border-mobile">
+                        <Col xs={12} md={12}>
+                            <h6>Venta: </h6>
+                        </Col>
+                        <Col xs={12} md={12}>
+                            <h6>${formatNumber(totales.ventas)}</h6>
+                        </Col>
+                    </Row>
                 </Col>
                 <OverlayTrigger placement="bottom" overlay={
                     <Tooltip>
@@ -205,7 +225,14 @@ const Proyectos = () => {
                     </Tooltip>
                 }>
                     <Col xs={6} md={3} className="resumenTotal">
-                        <h6>Ingresos: ${formatNumber(totales.ingresos)}</h6>
+                        <Row  className="border-right">
+                            <Col xs={12} md={12}>
+                                <h6>Ingresos:</h6>
+                            </Col>
+                            <Col xs={12} md={12}>
+                                <h6> ${formatNumber(totales.ingresos)}</h6>
+                            </Col>
+                        </Row>
                     </Col>
                 </OverlayTrigger>
                 <OverlayTrigger placement="bottom" overlay={
@@ -216,59 +243,64 @@ const Proyectos = () => {
                     </Tooltip>
                 }>
                     <Col xs={6} md={3} className="resumenTotal">
-                        <h6>Egresos: ${formatNumber(totales.egresos)}</h6>
+                        <Row>
+                            <Col xs={12} md={12}>
+                                <h6>Egresos: </h6>
+                            </Col>
+                            <Col xs={12} md={12}>
+                                <h6>${formatNumber(totales.egresos)}</h6>
+                            </Col>
+                        </Row>
                     </Col>
                 </OverlayTrigger>
             </Row>
+            {spinner && <Spinner animation="border" variant="dark" />}
             <Row>
                 <Accordion>
                     {
-                        proyectos.length > 0 ?
-                            proyectos.map(proyecto => (
-                                <Col key={proyecto.id_proyecto}>
-                                    <Accordion.Item eventKey={proyecto.id_proyecto}>
-                                        <Accordion.Header> {proyecto.id_proyecto} </Accordion.Header>
-                                        <Accordion.Body>
-                                            <Row>
-                                                {proyecto.id_centro_costo == 2 && <>
-                                                    <Col xs={12} md={6}>
-                                                        <Row>
-                                                            <Col xs={1} md={1}></Col>
-                                                            <Col xs={11} md={11}><p> Venta: ${formatNumber(proyecto.venta)}</p></Col>
-                                                        </Row>
-                                                    </Col>
-                                                    <Col xs={12} md={6}>
-                                                        <Row>
-                                                            <Col xs={1} md={1}></Col>
-                                                            <Col xs={11} md={11}><p> Costo: ${formatNumber(proyecto.costo)}</p></Col>
-                                                        </Row>
-                                                    </Col>
-                                                </>}
+                        proyectos.length > 0 &&
+                        proyectos.map(proyecto => (
+                            <Col key={proyecto.id_proyecto}>
+                                <Accordion.Item eventKey={proyecto.id_proyecto}>
+                                    <Accordion.Header> {proyecto.id_proyecto} </Accordion.Header>
+                                    <Accordion.Body>
+                                        <Row>
+                                            {proyecto.id_centro_costo == 2 && <>
                                                 <Col xs={12} md={6}>
                                                     <Row>
-                                                        <Col xs={1} md={1}>
-                                                            <Link to={`/egresos/${proyecto.id_proyecto}`}> <Icons.ArchiveFill className="icon-detalle" /> </Link>
-                                                        </Col>
-                                                        <Col xs={11} md={11}><p> Egresos: ${formatNumber(egresosProyecto(proyecto.id_proyecto))} </p></Col>
+                                                        <Col xs={1} md={1}></Col>
+                                                        <Col xs={11} md={11}><p> Venta: ${formatNumber(proyecto.venta)}</p></Col>
                                                     </Row>
                                                 </Col>
                                                 <Col xs={12} md={6}>
                                                     <Row>
-                                                        <Col xs={1} md={1}>
-                                                            <Link to={`/ingresos/${proyecto.id_proyecto}`}> <Icons.ArchiveFill className="icon-detalle" /> </Link>
-                                                        </Col>
-                                                        <Col xs={11} md={11}><p> Ingresos: ${formatNumber(ingresosProyecto(proyecto.id_proyecto))} </p></Col>
+                                                        <Col xs={1} md={1}></Col>
+                                                        <Col xs={11} md={11}><p> Costo: ${formatNumber(proyecto.costo)}</p></Col>
                                                     </Row>
                                                 </Col>
-                                            </Row>
-                                        </Accordion.Body>
-                                    </Accordion.Item>
-                                </Col>
-                            ))
-                            : <Col>
-                                <h6>No existen proyectos</h6>
-                                <p>Agregar icono de alerta</p>
+                                            </>}
+                                            <Col xs={12} md={6}>
+                                                <Row>
+                                                    <Col xs={1} md={1}>
+                                                        <Link to={`/egresos/${proyecto.id_proyecto}`}> <Icons.ArchiveFill className="icon-detalle" /> </Link>
+                                                    </Col>
+                                                    <Col xs={11} md={11}><p> Egresos: ${formatNumber(egresosProyecto(proyecto.id_proyecto))} </p></Col>
+                                                </Row>
+                                            </Col>
+                                            <Col xs={12} md={6}>
+                                                <Row>
+                                                    <Col xs={1} md={1}>
+                                                        <Link to={`/ingresos/${proyecto.id_proyecto}`}> <Icons.ArchiveFill className="icon-detalle" /> </Link>
+                                                    </Col>
+                                                    <Col xs={11} md={11}><p> Ingresos: ${formatNumber(ingresosProyecto(proyecto.id_proyecto))} </p></Col>
+                                                </Row>
+                                            </Col>
+                                        </Row>
+                                    </Accordion.Body>
+                                </Accordion.Item>
                             </Col>
+                        ))
+
                     }
                 </Accordion>
             </Row>

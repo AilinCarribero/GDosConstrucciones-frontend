@@ -8,7 +8,6 @@ export const useGetUnidadNegocio = () => {
         (async () => {
             const resUnidadNegocio = await getUnidadNegocio();
             setUnidadNegocio(resUnidadNegocio);
-            console.log(resUnidadNegocio);
         })()
         
     }, [])

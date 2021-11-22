@@ -27,5 +27,12 @@
 }
 
 .menu{
-    background-color: #262625;
+    background-color: #262625 !important;
+}
+
+.img-side{
+    width: 60px;
+    height: 100px;
+    margin-top: 30px;
+    margin-bottom: -20%;
 }

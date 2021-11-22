@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { Navbar, Container, Nav } from 'react-bootstrap';
+import { Navbar, Container, Nav, Image } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 //Hooks
 import { useUser } from '../../../hooks/useUser';
@@ -10,7 +11,7 @@ import Sidenav from '../sidenav/Sidenav';
 //Css
 import './Navbar.css';
 import * as Icons from 'react-bootstrap-icons';
-import logo from '../../../img/logo.png'
+import logo from '../../../img/logowhitev2.png';
 
 const NavbarComponent = () => {
     const { logout, user } = useUser();
@@ -29,12 +30,12 @@ const NavbarComponent = () => {
     }, [user])
 
     return (<>
-        <Navbar className="navbar" bg="dark">
-            { user.rango === 'admin' ? <Sidenav /> : '' }
+        <Navbar className="navbar">
+            { user.rango == 'admin' && <Sidenav />}
             <Container>
-                <Navbar.Brand to="/">
-                    <img to="/" src={logo} width="30" height="30" className="d-inline-block align-top text-color img" alt="GDos Construcciones"/>
-                </Navbar.Brand>
+                <Link to="/">
+                    <Image src={logo} className="align-top img" alt="GDos Construcciones"/>
+                </Link>
                 {renderLogaut()}
             </Container>
         </Navbar>

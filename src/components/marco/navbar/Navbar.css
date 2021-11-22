@@ -7,7 +7,8 @@
 }
 
 .navbar {
-    width: 100vw;
+    width: 100vw !important;
+    background-color: black !important;
     align-items: center;
 }
 
@@ -20,8 +21,11 @@
 }
 
 .img{
-    box-shadow: 20px white ;
-    width: 100px ;
-    margin-left: -30px;
-    height: 40px;
+    width: 30px ;
+    margin-left: -2%;
+    height: 50px;
+}
+
+.img:hover{
+    color: grey;
 }

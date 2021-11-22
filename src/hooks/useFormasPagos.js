@@ -8,7 +8,6 @@ export const useGetFormasPagos = () => {
         (async () => {
             const resFormaPago = await getFormasPago();
             setFormasPagos(resFormaPago);
-            console.log(resFormaPago);
         })()
         
     }, [])

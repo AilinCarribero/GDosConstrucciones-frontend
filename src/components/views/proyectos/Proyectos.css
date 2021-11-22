@@ -24,22 +24,6 @@ button .accordion-button {
     text-align: center;
 }
 
-.card-form-proyectos
-{
-    position: relative;
-    top: 5%;
-    width: 400px !important;
-    border: 1px ;
-    border-style: hidden;
-    border-radius: 10px;
-    margin: 5px;
-}
-
-.label-title-proyecto {
-    font-size: 15px;
-    font-weight: bold;
-}
-
 .button-ver-mas{
     border-color: transparent;
     background-color: transparent;
@@ -55,4 +39,37 @@ button .accordion-button {
 
 .text_select{
     color: black;
+}
+
+.border-right{
+    border-right: 1px solid white;
+}
+
+@media only screen and (hover: none) and (pointer: coarse){
+    .border-mobile{
+        border-right: transparent !important;
+    }    
+}
+
+/*Formulario*/
+.card-form-proyectos
+{
+    position: relative;
+    top: 5%;
+    width: 400px !important;
+    border: 1px ;
+    border-style: hidden;
+    border-radius: 10px;
+    margin: 5px;
+}
+
+@media only screen and (hover: none) and (pointer: coarse){
+    .mobile-form-proyecto{
+        width: 340px !important;
+    }
+}
+
+.label-title-proyecto {
+    font-size: 15px;
+    font-weight: bold;
 }

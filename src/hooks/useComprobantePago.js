@@ -8,7 +8,6 @@ export const useGetComprobantesPago = () => {
         (async () => {
             const resComprobantePago = await getComprobantePago();
             setComprobantePago(resComprobantePago);
-            console.log(resComprobantePago);
         })()
         
     }, [])

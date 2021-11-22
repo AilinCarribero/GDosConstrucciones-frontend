@@ -18,7 +18,6 @@ export const useGetUser = () => {
         (async () => {
             const resGetUser = await getUser();
             setUser(resGetUser);
-            console.log(resGetUser);
         })()
     }, [])
     return { user, setUser }

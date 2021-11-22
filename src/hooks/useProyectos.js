@@ -8,7 +8,6 @@ export const useGetProyectos = () => {
         (async () => {
             const resProyectos = await getProyectos();
             setProyectos(resProyectos);
-            console.log(resProyectos);
         })()
     }, [])
     

@@ -18,13 +18,11 @@ const FormUsuarios = () => {
     })
 
     const [validated, setValidated] = useState(false);
-    const [chequed, setChequed] = useState('false');
 
     const handleChangeForm = (e) => {
         const targetName = e.target.name
         const targetValue = e.target.value
 
-        console.log(e.target.checked);
         setNewUser(prevNewUser => ({
             ...prevNewUser,
             [targetName]: targetValue
@@ -44,10 +42,8 @@ const FormUsuarios = () => {
 
         if (form.checkValidity() === true) {
             try {
-                console.log(newUser);
                 const resNewUser = await insertUser(newUser);
 
-                console.log(resNewUser);
                 if (resNewUser.status == 200 || resNewUser.statusText == 'Ok') {
                     ToastComponent('success');
 
@@ -72,7 +68,7 @@ const FormUsuarios = () => {
     return (
         <Row className="justify-content-center">
             <Col xs="auto" sm="auto" md="auto" lg="auto" xl="auto" xxl="auto" >
-                <Card className="text-center card-form-user">
+                <Card className="text-center card-form-user mobile-form-usuario">
                     <Card.Header className="title-form" >Registre un Nuevo Usuario</Card.Header>
                     <Card.Body>
                         <Form noValidate validated={validated} onSubmit={handleSubmit} >

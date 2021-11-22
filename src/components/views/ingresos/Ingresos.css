@@ -1,14 +1,20 @@
+/*Formulario*/
 .card-form-ingreso
 {
-    position: relative;
+    position: absolute;
     top: 5%;
-    width: 400px !important;
     border: 1px ;
     border-style: hidden;
     border-radius: 10px;
-    margin: 5px;
 }
 
+@media only screen and (hover: none) and (pointer: coarse){
+    .mobile-form-ingreso{
+        width: 340px !important;
+    }
+}
+
+/*Vista*/
 .acordion{
     margin-top: 30px !important;
 }

@@ -37,7 +37,6 @@ const FormProyectos = () => {
     const handleChangeForm = (e) => {
         const targetName = e.target.name
         const targetValue = e.target.value
-        console.log(targetName +' - '+targetValue+' - '+e.target.type);
         
         setProyecto(prevProyecto => ({
             ...prevProyecto,
@@ -70,8 +69,7 @@ const FormProyectos = () => {
             
             try {
                 const resProyecto = await insertProyecto(auxProyecto);
-    
-                console.log(resProyecto);
+                
                 if(!resProyecto.data.errno && resProyecto.status == 200){
                     ToastComponent('success');
                     
@@ -98,7 +96,7 @@ const FormProyectos = () => {
     return (<>
         <Row className="justify-content-center">
             <Col xs="auto" sm="auto" md="auto" lg="auto" xl="auto" xxl="auto" >
-                <Card className="text-center card-form-proyectos">
+                <Card className="text-center card-form-proyectos mobile-form-proyecto">
                     <Card.Header className="title-form" >Ingrese un Nuevo Proyecto</Card.Header>
                     <Card.Body>
                         <Form noValidate validated={validated} onSubmit={handleSubmitForm} >

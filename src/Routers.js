@@ -19,12 +19,11 @@ import { useUser } from './hooks/useUser';
 
 const Routers = () => {
     const { user } = useUser();
-    console.log(user);
 
     return (
         <BrowserRouter>
             <NavbarComponent />
-            <Container>
+            <Container fluid>
                 <Route exact path="/" render={() => {
                     return (
                         user.token

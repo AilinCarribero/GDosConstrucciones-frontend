@@ -33,7 +33,6 @@ const Home = () => {
             const userResponse = await login(data);
 
             if (userResponse.token) {
-                console.log('Login exitoso');
                 window.localStorage.setItem('loggedAppUser', JSON.stringify(userResponse));
                 document.cookie= 'loggedAppUser=existo; max-age=60*60*24*6;';
 
@@ -41,11 +40,11 @@ const Home = () => {
 
                 history.push("/");
             } else {
-                ToastComponent('error');
+                ToastComponent('error','Error al intentar ingresar');
                 console.log('Error');
             }
         } catch (error) {
-            ToastComponent();
+            ToastComponent('error','Error al intentar ingresar');
             console.log(error);
         }
     }

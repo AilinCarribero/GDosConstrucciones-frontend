@@ -8,7 +8,6 @@ export const useGetEgresos = () => {
         (async () => {
             const resEgresos = await getEgresos();
             setEgresos(resEgresos);
-            console.log(resEgresos);
         })()
     }, [])
     return { egresos, setEgresos }
@@ -21,7 +20,6 @@ export const useGetEgresosId = (id) => {
         (async () => {
             const resEgresos = await getEgresosId(id);
             setEgresos(resEgresos);
-            console.log(resEgresos);
         })()
     }, [])
     return { egresos, setEgresos }

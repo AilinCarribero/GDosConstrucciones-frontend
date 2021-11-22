@@ -8,7 +8,6 @@ export const useGetCentroCosto = () => {
         (async () => {
             const resCentroCosto = await getCentroCosto();
             setCentroCosto(resCentroCosto);
-            console.log(resCentroCosto);
         })()
         
     }, [])

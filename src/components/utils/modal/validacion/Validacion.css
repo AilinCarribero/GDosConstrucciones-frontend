@@ -1,0 +1,27 @@
+/*Global*/
+.button-validacion{
+    width: 100%;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+}
+
+.button-contenedor{
+    border-top: 1px solid rgb(190, 190, 190);
+    padding-top: 10px;
+    margin-top: 10px !important;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 5px;
+}
+
+.icono{
+    margin-right: 15px;
+}
+
+.texto{
+    margin-bottom: 10px;
+}
+/*Egreso*/
+
+/*Ingreso*/

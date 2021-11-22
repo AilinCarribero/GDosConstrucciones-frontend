@@ -8,7 +8,6 @@ export const useGetAnalisisCostos = () => {
         (async () => {
             const resAnalisisCosto = await getAnalisisCostos();
             setAnalisisCostos(resAnalisisCosto);
-            console.log(resAnalisisCosto);
         })()
     }, [])
     return { analisisCostos, setAnalisisCostos }
@@ -21,7 +20,6 @@ export const useDetalleAnalisisCosto = () => {
         (async () => {
             const resDetalleAnalisisCosto = await getDetalleAnalisisCostos();
             setDetalleAC(resDetalleAnalisisCosto);
-            console.log(resDetalleAnalisisCosto);
         })()
     }, [])
     return { detalleAC, setDetalleAC }
