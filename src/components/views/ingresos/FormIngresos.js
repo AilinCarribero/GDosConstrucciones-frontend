@@ -165,16 +165,16 @@ const FormIngresos = () => {
 
     const handleSubmit = async () => {
         let resIngreso = [];
-        if (auxIngresos) {
+        if (!auxIngresos) {
             try {
-                resIngreso = await insertIngreso(auxIngresos);
+                resIngreso = await insertIngreso(ingreso);
             } catch (error) {
                 console.log(error);
                 ToastComponent('error');
             }
         } else {
             try {
-                resIngreso = await insertIngreso(ingreso);
+                resIngreso = await insertIngreso(auxIngresos);
             } catch (error) {
                 console.log(error);
                 ToastComponent('error');
