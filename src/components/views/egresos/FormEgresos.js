@@ -320,15 +320,15 @@ const FormEgresos = () => {
                             }
                             {showDetalleAC &&
                                 <Form.Group className="mb-3">
-                                    <FloatingLabel controlId="floatingInputGrid" label="Detalle de Analisis de Costo">
-                                        <Form.Control onChange={handleChangeForm} name="observaciones" type="text" value={egreso.observaciones} required />
+                                    <FloatingLabel controlId="floatingInputGrid" label="Detalle">
+                                        <Form.Control onChange={handleChangeForm} name="observaciones" type="text" value={egreso.observaciones} />
                                     </FloatingLabel>
                                 </Form.Group>
                             }
                             {showDetalleFP &&
                                 <Form.Group className="mb-3">
-                                    <FloatingLabel controlId="floatingInputGrid" label="Detalle de Forma de Pago">
-                                        <Form.Control onChange={handleChangeForm} name="observaciones" type="text" value={egreso.observaciones} required />
+                                    <FloatingLabel controlId="floatingInputGrid" label="Detalle">
+                                        <Form.Control onChange={handleChangeForm} name="observaciones" type="text" value={egreso.observaciones} />
                                     </FloatingLabel>
                                 </Form.Group>
                             }
