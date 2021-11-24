@@ -158,7 +158,12 @@ const FormEgresos = () => {
             }
         } else {
             try {
-                resEgreso = await insertEgreso(egreso);
+                if(egreso.fecha_diferido_pago){
+                    resEgreso = await insertEgreso(egreso);
+                } else {
+                    egreso.fecha_diferido_pago = '0000-00-00 00:00:00';
+                    resEgreso = await insertEgreso(egreso);
+                }
             } catch (error) {
                 console.log(error);
                 ToastComponent('error');

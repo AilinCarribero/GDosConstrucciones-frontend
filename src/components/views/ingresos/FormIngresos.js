@@ -176,7 +176,13 @@ const FormIngresos = () => {
             }
         } else {
             try {
-                resIngreso = await insertIngreso(ingreso);
+                if(ingreso.fecha_diferido_cobro){
+                    resIngreso = await insertIngreso(ingreso);
+                } else {
+                    ingreso.fecha_diferido_cobro = '0000-00-00 00:00:00';
+                    resIngreso = await insertIngreso(ingreso);
+                }
+                
                 console.log('hola ingreso');
                 console.log(resIngreso);
             } catch (error) {
