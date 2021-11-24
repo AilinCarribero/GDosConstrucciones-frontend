@@ -42,8 +42,8 @@ const FormEgresos = () => {
         id_forma_pago: '',
         fecha_diferido_pago: '',
         observaciones: '',
-        id_comprobante_pago: '',
-        numero_comprobante: '',
+        id_comprobante_pago: 0,
+        numero_comprobante: 0,
         centro_costo: ''
     });
 
