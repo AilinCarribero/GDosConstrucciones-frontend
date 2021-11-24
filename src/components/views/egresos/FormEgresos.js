@@ -149,16 +149,16 @@ const FormEgresos = () => {
     const handleSubmit = async () => {
         let resEgreso = [];
 
-        if (!auxEgresos) {
+        if (auxEgresos.length > 0) {
             try {
-                resEgreso = await insertEgreso(egreso);
+                resEgreso = await insertEgreso(auxEgresos);
             } catch (error) {
                 console.log(error);
                 ToastComponent('error');
             }
         } else {
             try {
-                resEgreso = await insertEgreso(auxEgresos);
+                resEgreso = await insertEgreso(egreso);
             } catch (error) {
                 console.log(error);
                 ToastComponent('error');
@@ -191,6 +191,8 @@ const FormEgresos = () => {
                 centro_costo: ''
             })
             setValidated(false);
+            setDatosValidacion([]);
+            setAuxEgresos([])
         } else {
             ToastComponent('error');
         }
@@ -334,16 +336,16 @@ const FormEgresos = () => {
                                 <Form.Label className="label-title">Comprobante de Pago</Form.Label>
                                 <Row key={`inline-radio`} className="check">
                                     <Col xs={4} sm={4} >
-                                        <Form.Check inline onChange={handleChangeForm} label="Factura" name="comprobante" value="Factura" type="radio" required />
+                                        <Form.Check inline onChange={handleChangeForm} label="Factura" name="comprobante" value="Factura" type="radio" />
                                     </Col>
                                     <Col xs={8} sm={8} >
-                                        <Form.Check inline onChange={handleChangeForm} label="Comprobante de Pago" name="comprobante" value="Comprobante de Pago" type="radio" required />
+                                        <Form.Check inline onChange={handleChangeForm} label="Comprobante de Pago" name="comprobante" value="Comprobante de Pago" type="radio" />
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col xs={4} sm={4}>
                                         <FloatingLabel label="Tipo">
-                                            <Form.Select onChange={handleChangeForm} name="id_comprobante_pago" value={egreso.id_comprobante_pago} required >
+                                            <Form.Select onChange={handleChangeForm} name="id_comprobante_pago" value={egreso.id_comprobante_pago} >
                                                 <option value=""> </option>
                                                 {
                                                     comprobantePago.map((comprobante) => (
@@ -358,7 +360,7 @@ const FormEgresos = () => {
                                     </Col>
                                     <Col xs={8} sm={8}>
                                         <FloatingLabel controlId="floatingInputGrid" label="N°">
-                                            <Form.Control onChange={handleChangeForm} name="numero_comprobante" type="number" value={egreso.numero_comprobante} required />
+                                            <Form.Control onChange={handleChangeForm} name="numero_comprobante" type="number" value={egreso.numero_comprobante} />
                                         </FloatingLabel>
                                     </Col>
                                 </Row>

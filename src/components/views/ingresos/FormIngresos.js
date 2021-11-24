@@ -136,7 +136,7 @@ const FormIngresos = () => {
                         }
                     }
                     setAuxIngresos(auxIngreso);
-                    setDatosValidacion(auxIngresos);
+                    setDatosValidacion(auxIngreso);
                     setShowModal(true);
                 }
             } else if (cheques && cantCheque > 0) {
@@ -165,23 +165,27 @@ const FormIngresos = () => {
 
     const handleSubmit = async () => {
         let resIngreso = [];
-        if (!auxIngresos) {
+        
+        if(auxIngresos.length > 0) {
             try {
-                resIngreso = await insertIngreso(ingreso);
+                resIngreso = await insertIngreso(auxIngresos);
+                console.log(resIngreso);
             } catch (error) {
                 console.log(error);
                 ToastComponent('error');
             }
         } else {
             try {
-                resIngreso = await insertIngreso(auxIngresos);
+                resIngreso = await insertIngreso(ingreso);
+                console.log('hola ingreso');
+                console.log(resIngreso);
             } catch (error) {
                 console.log(error);
                 ToastComponent('error');
             }
         }
 
-        if (!resIngreso.data.errno && (resIngreso.status == 200 || resIngreso.statusText == 'Ok')) {
+        if (resIngreso.status == 200 || resIngreso.statusText == 'Ok') {
             ToastComponent('success');
 
             //En caso de tener algun elemento extra mostrandose se vuelve a ocular
@@ -203,6 +207,10 @@ const FormIngresos = () => {
                 observaciones: '',
                 centro_costo: ''
             })
+            setAuxIngresos([]);
+            setCantCheque(0);
+            setCheques('');
+            setDatosValidacion([]);
             setValidated(false);
         } else {
             ToastComponent('error');
