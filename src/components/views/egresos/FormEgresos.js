@@ -170,7 +170,7 @@ const FormEgresos = () => {
             }
         }
 
-        if (resEgreso.status == 200 || resEgreso.statusText == 'Ok') {
+        if (resEgreso.todoOk == 'Ok') {
             ToastComponent('success');
 
             //En caso de tener algun elemento extra mostrandose se vuelve a ocular

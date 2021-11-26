@@ -28,7 +28,7 @@ const Ingresos = () => {
                                     <Accordion.Body>
                                         <Row>
                                             <Col xs={12} md={6}>Fecha del cobro<b>:</b> {new Date(ingreso.fecha_cobro).toISOString().slice(0, 10)}</Col>
-                                            {(ingreso.fecha_diferido_cobro != ingreso.fecha_cobro) && <>
+                                            {(new Date(ingreso.fecha_diferido_cobro) > new Date(ingreso.fecha_cobro)) && <>
                                                 <Col xs={12} md={6}>Fecha diferida<b>:</b> {new Date(ingreso.fecha_diferido_cobro).toISOString().slice(0, 10)}</Col>
                                             </>}
                                         </Row>
