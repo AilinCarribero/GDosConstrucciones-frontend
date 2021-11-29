@@ -56,7 +56,7 @@ const ValidacionEgreso = ({ mostrar, datos, pago, comprobantes, analisisCostos, 
                         {dato.cuota && (<>
                             {dato.cuotaNumero == 0 && <Col className="texto" xs={12} sm={12}><b>Cantidad de cuotas: </b>{dato.cuota}</Col>}
                             <Col className="texto" xs={6} sm={6}><b>Cuota N°: </b>{dato.cuotaNumero + 1}</Col>
-                            <Col className="texto" xs={6} sm={6}><b>Monto: $</b>{formatNumber(dato.valor_pago)}</Col>
+                            <Col className="texto" xs={6} sm={6}><b>Monto: $</b>{dato.valor_pago}</Col>
                             <Col className="texto" xs={12} sm={12}><b>Fecha a pagar: </b>{dato.fecha_diferido_pago}</Col>
                         </>)}
                     </Row>
@@ -78,7 +78,7 @@ const ValidacionEgreso = ({ mostrar, datos, pago, comprobantes, analisisCostos, 
                                     </>))}
                             </Row>))
                         }
-                        <Col className="texto" xs={4} sm={4}><b>Monto: $</b>{formatNumber(datos.valor_pago)}</Col>
+                        <Col className="texto" xs={4} sm={4}><b>Monto: $</b>{datos.valor_pago}</Col>
                         {comprobantes.map(comprobante => (
                             comprobante.id_comprobante_pago == datos.id_comprobante_pago && <Row key={comprobante.id_comprobante_pago}>
                                 <Col className="texto" xs={12} sm={12}><b>Comprobante de Pago: </b>{comprobante.nombre_comprobante} </Col>

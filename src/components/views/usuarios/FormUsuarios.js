@@ -43,8 +43,8 @@ const FormUsuarios = () => {
         if (form.checkValidity() === true) {
             try {
                 const resNewUser = await insertUser(newUser);
-
-                if (resNewUser.status == 200 || resNewUser.statusText == 'Ok') {
+console.log(resNewUser)
+                if (resNewUser.todoOk == 'Ok') {
                     ToastComponent('success');
 
                     setNewUser({
@@ -95,6 +95,9 @@ const FormUsuarios = () => {
                                     </Col>
                                     <Col xs={8} sm={8} >
                                         <Form.Check inline onChange={handleChangeForm} label="Usuario comun" name="id_rango" value="2" type="radio" required />
+                                    </Col>
+                                    <Col xs={8} sm={8} >
+                                        <Form.Check inline onChange={handleChangeForm} label="Moderador" name="id_rango" value="3" type="radio" required />
                                     </Col>
                                 </Row>
                             </Form.Group>

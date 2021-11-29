@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Button, Row, FloatingLabel, Form, Col } from 'react-bootstrap';
+import NumberFormat from 'react-number-format';
 
 //Hooks
 import { useGetFormasCobro } from '../../../hooks/useFormasCobro';
@@ -122,7 +123,12 @@ const FormIngresos = () => {
             /*En caso de tener cuotas el valor del importe debe dividirse en partes iguales acorde a la cantidad 
             de cuotas seleccionadas y se debera diferir cada cuota a 30 dias despues de la siguiente */
             if (ingreso.cuota > 0) {
-                const valorCuota = ingreso.valor_cobro ? ingreso.valor_cobro / ingreso.cuota : 0;
+                let auxCuotaValor = ingreso.valor_cobro.toString();
+                auxCuotaValor = auxCuotaValor.replace(/\./g, '');
+                auxCuotaValor = auxCuotaValor.replace(/\,/g, '.');
+                auxCuotaValor = parseFloat(auxCuotaValor);
+
+                const valorCuota = ingreso.valor_cobro ? auxCuotaValor/ingreso.cuota : 0;
 
                 if (valorCuota !== 0) {
                     for (let i = 0; i < ingreso.cuota; i++) {
@@ -179,7 +185,7 @@ const FormIngresos = () => {
                 if(ingreso.fecha_diferido_cobro){
                     resIngreso = await insertIngreso(ingreso);
                 } else {
-                    ingreso.fecha_diferido_cobro = '0000-00-00 00:00:00';
+                    ingreso.fecha_diferido_cobro = '0000-00-00';
                     resIngreso = await insertIngreso(ingreso);
                 }
                 
@@ -191,7 +197,7 @@ const FormIngresos = () => {
             }
         }
 
-        if (resIngreso.status == 200 || resIngreso.statusText == 'Ok') {
+        if (resIngreso.data.todoOk == 'Ok') {
             ToastComponent('success');
 
             //En caso de tener algun elemento extra mostrandose se vuelve a ocular
@@ -236,7 +242,8 @@ const FormIngresos = () => {
                         </Col>
                         <Col xs={6} sm={6}>
                             <FloatingLabel controlId="floatingInputGrid" label="Monto del Cheque">
-                                <Form.Control onChange={handleChangeForm} name={"monto" + i} type="number" required />
+                                <NumberFormat customInput={Form.Control} decimalSeparator={","} thousandSeparator={"."} 
+                                            onChange={handleChangeForm} name={"monto" + i} required/>
                             </FloatingLabel>
                         </Col>
                     </Row>
@@ -308,7 +315,8 @@ const FormIngresos = () => {
                             {!showCheque &&
                                 <Form.Group className="mb-3">
                                     <FloatingLabel label="Importe">
-                                        <Form.Control onChange={handleChangeForm} name="valor_cobro" type="number" value={ingreso.valor_cobro} required />
+                                        <NumberFormat customInput={Form.Control} decimalSeparator={","} thousandSeparator={"."} 
+                                            onChange={handleChangeForm} name="valor_cobro" value={ingreso.valor_cobro} required/>
                                     </FloatingLabel>
                                 </Form.Group>
                             }

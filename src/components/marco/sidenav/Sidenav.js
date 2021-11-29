@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Offcanvas, Nav, Button, Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
+//Hooks
+import { useUser } from '../../../hooks/useUser';
+
 //Css
 import './Sidenav.css';
 
@@ -10,6 +13,8 @@ import * as Icons from 'react-bootstrap-icons';
 import logo from '../../../img/logowhitev2.png';
 
 const Sidenav = () => {
+  const { user } = useUser()
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -32,11 +37,11 @@ const Sidenav = () => {
         <Nav className="justify-content-end flex-grow-1 pe-3">
           <Link className="text-link fondo-link" to="/" onClick={handleClose} >Inicio</Link>
           {/*<Link className="text-link fondo-link" to="/" onClick={handleClose} >Indices</Link>*/}
-          <Link className="text-link fondo-link" to="/usuarios" onClick={handleClose} >Usuarios</Link>
-          <Link className="text-link fondo-link" to="/ingresar/proyecto" onClick={handleClose} >Nuevo Proyecto</Link>
+          {user.rango == 'admin' && <Link className="text-link fondo-link" to="/usuarios" onClick={handleClose} >Usuarios</Link>}
+          {user.rango == 'admin' && <Link className="text-link fondo-link" to="/ingresar/proyecto" onClick={handleClose} >Nuevo Proyecto</Link>}
           <Link className="text-link fondo-link" to="/ingresar/egreso" onClick={handleClose} >Nuevo Egreso</Link>
           <Link className="text-link fondo-link" to="/ingresar/ingreso" onClick={handleClose} >Nuevo Ingreso</Link>
-          <Link className="text-link fondo-link" to="/ingresar/usuario" onClick={handleClose} >Nuevo Usuario</Link>
+          {user.rango == 'admin' && <Link className="text-link fondo-link" to="/ingresar/usuario" onClick={handleClose} >Nuevo Usuario</Link>}
         </Nav>
       </Offcanvas.Body>
     </Offcanvas>

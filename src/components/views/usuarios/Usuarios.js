@@ -10,7 +10,7 @@ import * as Icons from 'react-bootstrap-icons';
 
 const Usuarios = () => {
     const { user } = useGetUser();
-
+    
     return (<>
         <Row>
             <Table striped bordered hover size="sm" className="table-user">
@@ -28,7 +28,7 @@ const Usuarios = () => {
                             <tr key={usuario.id_user} >
                                 <td>{usuario.nombre_apellido}</td>
                                 <td>{usuario.correo}</td>
-                                <td>{usuario.id_rango == 1 ? 'Administrador' : 'Usuario Comun' }</td>
+                                <td>{usuario.rango}</td>
                                 <td>
                                     <Row>
                                         <Col xs={6} md={6}>

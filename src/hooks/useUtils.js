@@ -9,19 +9,6 @@ export const formatNumber = (numero) => {
     }).format(numero)
 }
 
-export const formatInputNumber = (numero) => {
-    numero = numero + ''; // Número a cadena
-    let str = ""; // Acumulación de cadenas
-    for (let i = numero.length - 1, j = 1; i >= 0; i--, j++) {
-        if (j % 3 == 0 && i != 0) {// Se agrega una coma cada tres dígitos para filtrar el caso donde es exactamente el primer dígito
-            str += numero[i] + ","; // Agrega una coma de miles
-            continue;
-        }
-        str += numero[i]; // Para acumular números al revés
-    }
-    return str.split('').reverse().join("");
-}
-
 //Activa un toast acorde al estado que se le pasa. Se le puede asignar un mensaje o usar el predeterminado.
 export const ToastComponent = (estado, mensaje) => {
     const customId = 1; //Esto es para que solo exista un toast a la vez

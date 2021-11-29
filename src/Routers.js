@@ -27,7 +27,7 @@ const Routers = () => {
                 <Route exact path="/" render={() => {
                     return (
                         user.token
-                            ? (user.rango === 'admin'
+                            ? (user.rango == 'admin' || user.rango == 'moderador'
                                 ? <Proyectos />
                                 : <FormEgresos />)
                             :
@@ -36,7 +36,7 @@ const Routers = () => {
                 }} />
 
                 {
-                    user.rango === 'admin' ? 
+                    user.rango == 'admin' ?
                         <>
                             <Route exact path="/ingresar/egreso" component={FormEgresos} />
                             <Route exact path="/ingresar/ingreso" component={FormIngresos} />
@@ -46,8 +46,16 @@ const Routers = () => {
                             <Route exact path="/egresos/:id" component={Egresos} />
                             <Route exact path="/ingresos/:id" component={Ingresos} />
                         </>
-                        : 
-                        <Redirect to="/" /> 
+                        :
+                        user.rango == 'moderador' ?
+                            <>
+                                <Route exact path="/ingresar/egreso" component={FormEgresos} />
+                                <Route exact path="/ingresar/ingreso" component={FormIngresos} />
+                                <Route exact path="/egresos/:id" component={Egresos} />
+                                <Route exact path="/ingresos/:id" component={Ingresos} />
+                            </>
+                            :
+                            <Redirect to="/" />
                 }
             </Container>
 

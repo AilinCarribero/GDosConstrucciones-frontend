@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Button, Row, FloatingLabel, Form, Col } from 'react-bootstrap';
+import NumberFormat from 'react-number-format';
 
 //Hooks
 import { useGetFormasPagos } from '../../../hooks/useFormasPagos';
@@ -121,7 +122,12 @@ const FormEgresos = () => {
             /*En caso de tener cuotas el valor del importe debe dividirse en partes iguales acorde a la cantidad de cuotas 
             seleccionadas y se debera diferir cada cuota a 30 dias despues de la siguiente */
             if (egreso.cuota > 0) {
-                const valorCuota = egreso.valor_pago ? egreso.valor_pago / egreso.cuota : 0;
+                let auxCuotaValor = egreso.valor_pago.toString();
+                auxCuotaValor = auxCuotaValor.replace(/\./g, '');
+                auxCuotaValor = auxCuotaValor.replace(/\,/g, '.');
+                auxCuotaValor = parseFloat(auxCuotaValor);
+
+                const valorCuota = egreso.valor_pago ? auxCuotaValor/egreso.cuota : 0;
 
                 if (valorCuota !== 0) {
                     for (let i = 0; i < egreso.cuota; i++) {
@@ -158,10 +164,15 @@ const FormEgresos = () => {
             }
         } else {
             try {
-                if(egreso.fecha_diferido_pago){
+                if (!egreso.id_comprobante_pago) {
+                    egreso.id_comprobante_pago = 6;
+                }
+
+                if (egreso.fecha_diferido_pago) {
                     resEgreso = await insertEgreso(egreso);
                 } else {
-                    egreso.fecha_diferido_pago = '0000-00-00 00:00:00';
+                    egreso.fecha_diferido_pago = '0000-00-00';
+
                     resEgreso = await insertEgreso(egreso);
                 }
             } catch (error) {
@@ -169,8 +180,8 @@ const FormEgresos = () => {
                 ToastComponent('error');
             }
         }
-
-        if (resEgreso.todoOk == 'Ok') {
+        console.log(resEgreso);
+        if (resEgreso.data.todoOk == 'Ok') {
             ToastComponent('success');
 
             //En caso de tener algun elemento extra mostrandose se vuelve a ocular
@@ -295,7 +306,8 @@ const FormEgresos = () => {
                             </Form.Group>
                             <Form.Group className="mb-3">
                                 <FloatingLabel label="Importe">
-                                    <Form.Control onChange={handleChangeForm} name="valor_pago" type="number" value={egreso.valor_pago} required />
+                                    <NumberFormat customInput={Form.Control} decimalSeparator={","} thousandSeparator={"."}
+                                        onChange={handleChangeForm} name="valor_pago" value={egreso.valor_pago} required />
                                 </FloatingLabel>
                             </Form.Group>
                             {showCuotas &&

@@ -4,6 +4,7 @@ toastify -> https://fkhadra.github.io/react-toastify/introduction/
 bootstrap -> https://react-bootstrap.netlify.app/
 icons -> https://icons.getbootstrap.com/#install
 sweet alerts -> https://sweetalert2.github.io/
+react-number-format -> https://github.com/s-yadav/react-number-format
 
 ### `npm start`
 

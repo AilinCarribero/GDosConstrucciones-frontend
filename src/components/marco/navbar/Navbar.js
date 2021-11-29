@@ -31,7 +31,7 @@ const NavbarComponent = () => {
 
     return (<>
         <Navbar className="navbar">
-            { user.rango == 'admin' && <Sidenav />}
+            { user.rango == 'admin' || user.rango == 'moderador'  && <Sidenav />}
             <Container>
                 <Link to="/">
                     <Image src={logo} className="align-top img" alt="GDos Construcciones"/>
