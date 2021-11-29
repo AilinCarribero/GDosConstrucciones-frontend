@@ -29,7 +29,7 @@ const Egresos = () => {
                                     <Accordion.Body>
                                         <Row>
                                             <Col xs={12} md={6}>Fecha del pago<b>:</b> {new Date(egreso.fecha_pago).toISOString().slice(0, 10)}</Col>
-                                            {(egreso.fecha_diferido_pago != egreso.fecha_pago) && <>
+                                            {(new Date(egreso.fecha_diferido_pago) > new Date(egreso.fecha_pago)) && <>
                                                 <Col xs={12} md={6}>Fecha diferida<b>:</b> {new Date(egreso.fecha_diferido_pago).toISOString().slice(0, 10)}</Col>
                                                 {(egreso.cuotas > 0) && <>
                                                     <Col xs={6} md={6}>Cantidad de cuotas<b>:</b> {egreso.cuotas}</Col>
