@@ -70,7 +70,7 @@ const FormProyectos = () => {
             try {
                 const resProyecto = await insertProyecto(auxProyecto);
                 
-                if(!resProyecto.data.errno && resProyecto.status == 200){
+                if(resProyecto.data.todoOk == 'Ok'){
                     ToastComponent('success');
                     
                     setProyecto({
@@ -110,7 +110,7 @@ const FormProyectos = () => {
                                                 {
                                                     centroCosto.map((centro_costo) => (
                                                         <option key={centro_costo.id_centro_costo} value={centro_costo.id_centro_costo}>
-                                                            {centro_costo.siglas_cc}
+                                                            {centro_costo.tipo_centro_costo}
                                                         </option>
                                                     ))
                                                 }
@@ -124,7 +124,7 @@ const FormProyectos = () => {
                                                 {
                                                     unidadNegocio.map((unidad_negocio) => (
                                                         <option key={unidad_negocio.id_unidad_negocio} value={unidad_negocio.id_unidad_negocio}>
-                                                            {unidad_negocio.siglas_uc}
+                                                            {unidad_negocio.unidad_negocio}
                                                         </option>
                                                     ))
                                                 }
@@ -135,7 +135,7 @@ const FormProyectos = () => {
                                 <Row>
                                     <Col sm={12}>
                                         <FloatingLabel label="Cliente">
-                                            <Form.Control onChange={handleChangeForm} name="cliente" type="text" value={proyecto.cliente} required />
+                                            <Form.Control onChange={handleChangeForm} name="cliente" type="text" value={proyecto.cliente}/>
                                         </FloatingLabel>
                                     </Col>
                                 </Row>

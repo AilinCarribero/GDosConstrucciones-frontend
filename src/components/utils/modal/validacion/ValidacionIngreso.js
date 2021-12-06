@@ -41,7 +41,7 @@ const ValidacionIngreso = ({ mostrar, datos, cobro, setShow, setSubmit }) => {
               dato.cuota && (<>
                 {dato.cuotaNumero == 0 && <Col className="texto" xs={12} sm={12}><b>Cantidad de cuotas: </b>{dato.cuota}</Col>}
                 <Col className="texto" xs={6} sm={6}><b>Cuota N°: </b>{dato.cuotaNumero + 1}</Col>
-                <Col className="texto" xs={6} sm={6}><b>Monto: $</b> {dato.valor_cobro}</Col>
+                <Col className="texto" xs={6} sm={6}><b>Monto: $</b> {formatNumber(dato.valor_cobro)}</Col>
                 <Col className="texto" xs={12} sm={12}><b>Fecha a pagar: </b>{dato.fecha_diferido_cobro}</Col>
               </>)
             }

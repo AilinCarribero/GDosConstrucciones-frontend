@@ -92,6 +92,7 @@ const FormIngresos = () => {
                     /* La forma de cobro mediante tarjeta de credito o cheques se maneja diferente al resto */
                     setShowCuotas(formaCobro.forma_cobro === 'Tarjeta de Credito' ? true : false) //... es tarjeta de credito se debe mostrar la seleccion de cuotas
                     setShowCheque(formaCobro.forma_cobro === 'E-Cheq' || formaCobro.forma_cobro === 'C.P.D.' ? true : false);//... si es un cheque debe mostrar un campo para ingresar la cantidad de cheques
+                    setShowDataCheques(false);
                     setShowFechaDif(formaCobro.requiere_f_cobro === 1
                         && formaCobro.forma_cobro !== 'Tarjeta de Credito'
                         && formaCobro.forma_cobro !== 'E-Cheq'
