@@ -39,7 +39,8 @@ const FormEgresos = () => {
         id_user: user.id,
         fecha_pago: new Date().toISOString().slice(0, 10),
         id_proyecto: '',
-        valor_pago: '',
+        valor_pago: 0,
+        valor_usd: 0,
         id_forma_pago: '',
         fecha_diferido_pago: '',
         observaciones: '',
@@ -52,6 +53,10 @@ const FormEgresos = () => {
     const [datosValidacion, setDatosValidacion] = useState([]);
     const [auxEgresos, setAuxEgresos] = useState([]);
 
+    //Checks
+    const [checkUSD, setCheckUSD] = useState(0);
+    const [checkComprobante, setCheckComprobante] = useState();
+
     //Eventos para mostrar partes del formulario
     const [showProyecto, setShowProyecto] = useState(false);
     const [showAC, setShowAC] = useState(false);
@@ -62,16 +67,38 @@ const FormEgresos = () => {
     const [showDetalleFP, setShowDetalleFP] = useState(false);
     const [showModal, setShowModal] = useState(false);
 
+    //Variables para validacion
     const [validated, setValidated] = useState(false);
 
     const handleChangeForm = (e) => {
         const targetName = e.target.name
         const targetValue = e.target.value
+        const targetType = e.target.type;
+        const targetCheck = e.target.checked;
 
-        setEgreso(prevEgreso => ({
-            ...prevEgreso,
-            [targetName]: targetValue
-        }))
+        //console.log(targetName + ' - ' + targetValue + ' - ' + targetType + ' - ' + targetCheck)
+
+        if (targetCheck) {
+            if (targetName == 'moneda') {
+                setCheckUSD(targetValue);
+                setEgreso(prevEgreso => ({
+                    ...prevEgreso,
+                    valor_pago: 0,
+                    valor_usd: 0
+                }))
+            } else {
+                setCheckComprobante(targetValue);
+                setEgreso(prevEgreso => ({
+                    ...prevEgreso,
+                    [targetName]: targetValue
+                }))
+            }
+        } else {
+            setEgreso(prevEgreso => ({
+                ...prevEgreso,
+                [targetName]: targetValue
+            }))
+        }
 
         //Si se selecciono un centro de costo mostrar el select de proyectos
         if (targetName === 'centro_costo') {
@@ -127,7 +154,7 @@ const FormEgresos = () => {
                 auxCuotaValor = auxCuotaValor.replace(/\,/g, '.');
                 auxCuotaValor = parseFloat(auxCuotaValor);
 
-                const valorCuota = egreso.valor_pago ? auxCuotaValor/egreso.cuota : 0;
+                const valorCuota = egreso.valor_pago ? auxCuotaValor / egreso.cuota : 0;
 
                 if (valorCuota !== 0) {
                     for (let i = 0; i < egreso.cuota; i++) {
@@ -198,7 +225,8 @@ const FormEgresos = () => {
                 id_user: user.id,
                 fecha_pago: new Date().toISOString().slice(0, 10),
                 id_proyecto: '',
-                valor_pago: '',
+                valor_pago: 0,
+                valor_usd: 0,
                 id_forma_pago: '',
                 fecha_diferido_pago: '',
                 observaciones: '',
@@ -208,7 +236,9 @@ const FormEgresos = () => {
             })
             setValidated(false);
             setDatosValidacion([]);
-            setAuxEgresos([])
+            setAuxEgresos([]);
+            setCheckUSD(0);
+            setCheckComprobante();
         } else {
             ToastComponent('error');
         }
@@ -305,9 +335,17 @@ const FormEgresos = () => {
                                 </FloatingLabel>
                             </Form.Group>
                             <Form.Group className="mb-3">
+                                <Row key={`inline-radio`} className="check">
+                                    <Col xs={4} sm={4} >
+                                        <Form.Check inline onChange={handleChangeForm} label="ARG$" name="moneda" value="0" type="radio" checked={checkUSD == '0'} />
+                                    </Col>
+                                    <Col xs={8} sm={8} >
+                                        <Form.Check inline onChange={handleChangeForm} label="USD$" name="moneda" value="1" type="radio" checked={checkUSD == '1'} />
+                                    </Col>
+                                </Row>
                                 <FloatingLabel label="Importe">
                                     <NumberFormat customInput={Form.Control} decimalSeparator={","} thousandSeparator={"."}
-                                        onChange={handleChangeForm} name="valor_pago" value={egreso.valor_pago} required />
+                                        onChange={handleChangeForm} name={checkUSD == 0 ? "valor_pago" : "valor_usd"} value={checkUSD == 0 ? egreso.valor_pago : egreso.valor_usd} required />
                                 </FloatingLabel>
                             </Form.Group>
                             {showCuotas &&
@@ -353,10 +391,10 @@ const FormEgresos = () => {
                                 <Form.Label className="label-title">Comprobante de Pago</Form.Label>
                                 <Row key={`inline-radio`} className="check">
                                     <Col xs={4} sm={4} >
-                                        <Form.Check inline onChange={handleChangeForm} label="Factura" name="comprobante" value="Factura" type="radio" />
+                                        <Form.Check inline onChange={handleChangeForm} label="Factura" name="comprobante" value="Factura" type="radio" checked={checkComprobante == 'Factura'} />
                                     </Col>
                                     <Col xs={8} sm={8} >
-                                        <Form.Check inline onChange={handleChangeForm} label="Comprobante de Pago" name="comprobante" value="Comprobante de Pago" type="radio" />
+                                        <Form.Check inline onChange={handleChangeForm} label="Comprobante de Pago" name="comprobante" value="Comprobante de Pago" type="radio" checked={checkComprobante == 'Comprobante de Pago'} />
                                     </Col>
                                 </Row>
                                 <Row>
@@ -366,7 +404,7 @@ const FormEgresos = () => {
                                                 <option value=""> </option>
                                                 {
                                                     comprobantePago.map((comprobante) => (
-                                                        egreso.comprobante === comprobante.nombre_comprobante &&
+                                                        egreso.comprobante == comprobante.nombre_comprobante &&
                                                         <option key={comprobante.id_comprobante_pago} value={comprobante.id_comprobante_pago}>
                                                             {comprobante.tipo_comprobante}
                                                         </option>
@@ -384,7 +422,7 @@ const FormEgresos = () => {
                             </Form.Group>
 
                             {showModal == true &&
-                                <ValidacionEgreso mostrar={showModal} datos={datosValidacion} pago={formasPagos} comprobantes={comprobantePago} analisisCostos={analisisCostos} detallesAC={detalleAC} setShow={setShowModal} setSubmit={handleSubmit} />
+                                <ValidacionEgreso mostrar={showModal} datos={datosValidacion} pago={formasPagos} comprobantes={comprobantePago} analisisCostos={analisisCostos} detallesAC={detalleAC} setShow={setShowModal} setSubmit={handleSubmit} usd={checkUSD} />
                             }
 
                             <Button className="button-submit" variant="dark" type="submit">

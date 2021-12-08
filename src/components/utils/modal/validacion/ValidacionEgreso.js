@@ -8,7 +8,7 @@ import { formatNumber } from '../../../../hooks/useUtils';
 //Css
 import './Validacion.css';
 
-const ValidacionEgreso = ({ mostrar, datos, pago, comprobantes, analisisCostos, detallesAC, setShow, setSubmit }) => {
+const ValidacionEgreso = ({ mostrar, datos, pago, comprobantes, analisisCostos, detallesAC, setShow, setSubmit, usd }) => {
     const handleClose = () => setShow(false);
 
     const handleEnviar = () => {
@@ -78,8 +78,8 @@ const ValidacionEgreso = ({ mostrar, datos, pago, comprobantes, analisisCostos, 
                                     </>))}
                             </Row>))
                         }
-                        <Col className="texto" xs={4} sm={4}><b>Monto: $</b>{datos.valor_pago}</Col>
-                        {comprobantes.map(comprobante => (
+                        <Col className="texto" xs={12} sm={12}><b>Monto: </b>{ usd == 0 ? '$' : 'USD$'}{ usd == 0 ? datos.valor_pago : datos.valor_usd }</Col>
+                        {comprobantes && comprobantes.map(comprobante => (
                             comprobante.id_comprobante_pago == datos.id_comprobante_pago && <Row key={comprobante.id_comprobante_pago}>
                                 <Col className="texto" xs={12} sm={12}><b>Comprobante de Pago: </b>{comprobante.nombre_comprobante} </Col>
                                 <Col className="texto" xs={3} sm={3}><b>Tipo: </b>{comprobante.tipo_comprobante} </Col>

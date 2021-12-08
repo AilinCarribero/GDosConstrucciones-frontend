@@ -22,6 +22,7 @@ button .accordion-button {
 .resumenTotal{
     align-items: center;
     text-align: center;
+    padding: 8px;
 }
 
 .button-ver-mas{
@@ -42,13 +43,22 @@ button .accordion-button {
 }
 
 .border-right{
-    border-right: 1px solid white;
+    border-right: 1.5px solid white;
+}
+
+.accordionCC{
+    border: solid 1px !important;
 }
 
 @media only screen and (hover: none) and (pointer: coarse){
-    .border-mobile{
+    .border-mobile-right{
         border-right: transparent !important;
-    }    
+    } 
+
+    .border-mobile-bot{
+        padding-bottom: 5px;
+        border-bottom: solid 1.5px white;
+    }
 }
 
 /*Formulario*/

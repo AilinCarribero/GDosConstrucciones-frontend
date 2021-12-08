@@ -29,19 +29,26 @@ const FormIngresos = () => {
     const { proyectos } = useGetProyectos();
     const { centroCosto } = useGetCentroCosto();
 
+    //Datos a enviarse a la api para ingresar/modificar ingresos
     const [ingreso, setIngreso] = useState({
         id_user: user.id,
         fecha_cobro: new Date().toISOString().slice(0, 10),
         id_proyecto: '',
-        valor_cobro: '',
+        valor_cobro: 0,
+        valor_usd: 0,
         fecha_diferido_cobro: '',
         observaciones: '',
         centro_costo: ''
     })
+
+    //Variables con infomacion
     const [cantCheque, setCantCheque] = useState(0);
     const [cheques, setCheques] = useState();
     const [datosValidacion, setDatosValidacion] = useState([]);
     const [auxIngresos, setAuxIngresos] = useState([]);
+
+    //Checks
+    const [checkUSD, setCheckUSD] = useState(0);
 
     //Eventos para mostrar partes del formulario
     const [showProyecto, setShowProyecto] = useState(false);
@@ -53,12 +60,16 @@ const FormIngresos = () => {
     const [showDataCheques, setShowDataCheques] = useState(false);
     const [showModal, setShowModal] = useState(false);
 
+    //Variables para la validacion
     const [validated, setValidated] = useState(false);
 
     const handleChangeForm = (e) => {
         const targetName = e.target.name;
         const targetValue = e.target.value;
         const targetType = e.target.type;
+        const targetCheck = e.target.checked;
+
+        //console.log(targetName + ' - ' + targetValue + ' - ' + targetType + ' - ' + targetCheck)
 
         if (targetName == 'cantCheque') {
             setCantCheque(targetValue);
@@ -67,6 +78,13 @@ const FormIngresos = () => {
             setCheques(prevCheques => ({
                 ...prevCheques,
                 [targetName]: targetValue
+            }))
+        } else if(targetCheck) {
+            setCheckUSD(targetValue);
+            setIngreso(prevIngreso => ({
+                ...prevIngreso,
+                valor_cobro: 0,
+                valor_usd: 0
             }))
         } else {
             setIngreso(prevIngreso => ({
@@ -215,7 +233,8 @@ const FormIngresos = () => {
                 id_user: user.id,
                 fecha_cobro: new Date().toISOString().slice(0, 10),
                 id_proyecto: '',
-                valor_cobro: '',
+                valor_cobro: 0,
+                valor_usd: 0,
                 fecha_diferido_cobro: '',
                 observaciones: '',
                 centro_costo: ''
@@ -225,6 +244,7 @@ const FormIngresos = () => {
             setCheques('');
             setDatosValidacion([]);
             setValidated(false);
+            setCheckUSD(0);
         } else {
             ToastComponent('error');
         }
@@ -315,9 +335,17 @@ const FormIngresos = () => {
                             </Form.Group>
                             {!showCheque &&
                                 <Form.Group className="mb-3">
+                                    <Row key={`inline-radio`} className="check">
+                                        <Col xs={4} sm={4} >
+                                            <Form.Check inline onChange={handleChangeForm} label="ARG$" name="pesos" value="0" type="radio" checked={checkUSD == '0'} />
+                                        </Col>
+                                        <Col xs={8} sm={8} >
+                                            <Form.Check inline onChange={handleChangeForm} label="USD$" name="dolares" value="1" type="radio" checked={checkUSD == '1'} />
+                                        </Col>
+                                    </Row>
                                     <FloatingLabel label="Importe">
                                         <NumberFormat customInput={Form.Control} decimalSeparator={","} thousandSeparator={"."} 
-                                            onChange={handleChangeForm} name="valor_cobro" value={ingreso.valor_cobro} required/>
+                                            onChange={handleChangeForm} name={checkUSD == 0 ? "valor_cobro" : "valor_usd"} value={checkUSD == 0 ? ingreso.valor_cobro : ingreso.valor_usd} required/>
                                     </FloatingLabel>
                                 </Form.Group>
                             }
@@ -367,7 +395,7 @@ const FormIngresos = () => {
                             }
 
                             {showModal == true &&
-                                <ValidacionIngreso mostrar={showModal} datos={datosValidacion} cobro={formasCobro} setShow={setShowModal} setSubmit={handleSubmit} />
+                                <ValidacionIngreso mostrar={showModal} datos={datosValidacion} cobro={formasCobro} setShow={setShowModal} setSubmit={handleSubmit} usd={checkUSD}/>
                             }
 
                             <Button className="button-submit" variant="dark" type="submit">

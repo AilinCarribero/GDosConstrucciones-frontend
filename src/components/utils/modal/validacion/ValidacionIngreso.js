@@ -8,7 +8,7 @@ import { formatNumber } from '../../../../hooks/useUtils';
 //Css
 import './Validacion.css';
 
-const ValidacionIngreso = ({ mostrar, datos, cobro, setShow, setSubmit }) => {
+const ValidacionIngreso = ({ mostrar, datos, cobro, setShow, setSubmit, usd }) => {
   const handleClose = () => setShow(false);
 
   const handleEnviar = () => {
@@ -62,7 +62,7 @@ const ValidacionIngreso = ({ mostrar, datos, cobro, setShow, setSubmit }) => {
               forma.id_forma_cobro == datos.id_forma_cobro && <Col className="texto" xs={12} sm={12} key={forma.id_forma_cobro}><b>Forma de cobro: </b>{forma.forma_cobro}</Col>
             ))}
             {datos.fecha_diferido_cobro && <Col className="texto" xs={12} sm={12}><b>Fecha a pagar: </b>{datos.fecha_diferido_cobro}</Col>}
-            <Col className="texto" xs={12} sm={12}><b>Monto: $</b> {datos.valor_cobro}</Col>
+            <Col className="texto" xs={12} sm={12}><b>Monto: </b> { usd == 0 ? '$' : 'USD$'} {usd == 0 ? datos.valor_cobro : datos.valor_usd}</Col>
             {datos.observaciones && <Col className="texto" xs={12} sm={12}><b>Observaciones: </b>{datos.observaciones}</Col>}
           </Row>
         }
