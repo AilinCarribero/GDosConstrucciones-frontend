@@ -23,7 +23,7 @@ const Ingresos = () => {
                                 <Accordion.Item eventKey={ingreso.id_ingreso}>
                                     <Accordion.Header>
                                         <Col className="acordion-title" xs={4} md={4}><b>{ingreso.forma_cobro}</b> </Col>
-                                        <Col className="acordion-title-number" xs={3} md={3}><b>${formatNumber(ingreso.valor_cobro)}</b> </Col>
+                                        <Col className="acordion-title-number" xs={3} md={3}><b> {ingreso.valor_cobro > 0? '$'+formatNumber(ingreso.valor_cobro) : 'USD$'+formatNumber(ingreso.valor_usd)}</b> </Col>
                                     </Accordion.Header>
                                     <Accordion.Body>
                                         <Row>
