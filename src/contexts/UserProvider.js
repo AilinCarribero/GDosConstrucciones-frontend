@@ -40,7 +40,7 @@ const UserProvider = ({children}) => {
         },
         logout(){
             window.localStorage.removeItem('loggedAppUser');
-            document.cookie = 'loggedAppUser=existo; expires=Fri, 31 Dec 1000 23:59:59 GMT"';
+            document.cookie = 'loggedAppUser=existo; expires=Fri, 31 Dec 2000 23:59:59 GMT"';
             setUser([]);
         }
     }

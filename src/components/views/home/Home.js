@@ -32,9 +32,11 @@ const Home = () => {
         try {
             const userResponse = await login(data);
 
+            const segCookie = 60*60*24*6;
+
             if (userResponse.token) {
                 window.localStorage.setItem('loggedAppUser', JSON.stringify(userResponse));
-                document.cookie= 'loggedAppUser=existo; max-age=60*60*24*6;';
+                document.cookie= 'loggedAppUser=existo; max-age='+segCookie+';';
 
                 loginContext(userResponse);
 

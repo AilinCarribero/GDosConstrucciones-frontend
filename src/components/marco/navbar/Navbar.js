@@ -18,9 +18,13 @@ const NavbarComponent = () => {
 
     const renderLogaut = () => {
         if(user.token) {
-            return (
+            console.log(user);
+            return (<>
+                <Navbar.Collapse className="justify-content-end">
+                    <Navbar.Text> <b className="text-nombre">{user.nombre_apellido}</b> </Navbar.Text>
+                </Navbar.Collapse>
                 <Nav.Link className="botton-sesion" onClick={logout} to="/"><Icons.DoorOpenFill className="icon-salida" size="25px" /></Nav.Link> 
-            )
+            </>)
         } 
     }
 

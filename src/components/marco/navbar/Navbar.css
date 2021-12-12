@@ -6,6 +6,14 @@
     color: azure;
 }
 
+.text-nombre{
+    color: aliceblue;
+    align-items: right;
+    text-align: right;
+    align-content: right;
+    font-size: 22px;
+}
+
 .navbar {
     width: 100vw !important;
     background-color: black !important;
