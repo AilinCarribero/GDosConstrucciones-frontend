@@ -356,7 +356,9 @@ const Proyectos = () => {
                                     ${formatNumber(totales.ingresos - totales.egresos)}
                                 </Col>
                                 <Col xs={6} md={6} className="text-resumen-totales">
-                                    USD${formatNumber(totales.ingresosUSD - totales.egresosUSD)}
+                                    USD${ totales.ingresosUSD && totales.egresosUSD ? formatNumber(totales.ingresosUSD - totales.egresosUSD) 
+                                        : (totales.ingresosUSD ? formatNumber(totales.ingresosUSD) 
+                                        :( totales.egresosUSD ?  formatNumber(totales.egresosUSD) : 0))}
                                 </Col>
                             </Row>
                         </Col>
