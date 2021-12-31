@@ -1,0 +1,19 @@
+.cont-filtros{
+    padding: 15px;
+    margin-bottom: 10px;
+    border-top: white solid 1px;
+    background-color: black;
+    -moz-transition:1s !important;
+    -ms-transition:1s !important;
+    -o-transition:1s !important;
+    -webkit-transition:1s !important;
+    transition:1s !important;
+}
+
+.input-filter{
+    margin-bottom: 10px;
+}
+
+.text-filtros-title-input {
+    font-size: 16px;
+}

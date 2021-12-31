@@ -17,27 +17,29 @@ import Ingresos from './components/views/ingresos/Ingresos';
 //Hooks
 import { useUser } from './hooks/useUser';
 
+//Contexts
+import ProyectoProvider from './contexts/ProyectosProvider';
+
 const Routers = () => {
     const { user } = useUser();
 
     return (
         <BrowserRouter>
-            <NavbarComponent />
-            <Container fluid>
-                <Route exact path="/" render={() => {
-                    return (
-                        user.token
+                <NavbarComponent />
+                <Container fluid>
+                    <Route exact path="/" render={() => {
+                        return (user.token
                             ? (user.rango == 'admin' || user.rango == 'moderador'
-                                ? <Proyectos />
+                                ? <> <Proyectos /> </>
                                 : <FormEgresos />)
                             :
                             <Home />
-                    )
-                }} />
+                        )
+                    }} />
 
-                {
-                    user.rango == 'admin' ?
-                        <>
+                    {
+                        user.rango == 'admin' &&
+                        <ProyectoProvider>
                             <Route exact path="/ingresar/egreso" component={FormEgresos} />
                             <Route exact path="/ingresar/ingreso" component={FormIngresos} />
                             <Route exact path="/ingresar/proyecto" component={FormProyectos} />
@@ -45,20 +47,18 @@ const Routers = () => {
                             <Route exact path="/usuarios" component={Usuarios} />
                             <Route exact path="/egresos/:id" component={Egresos} />
                             <Route exact path="/ingresos/:id" component={Ingresos} />
-                        </>
-                        :
-                        user.rango == 'moderador' ?
-                            <>
-                                <Route exact path="/ingresar/egreso" component={FormEgresos} />
-                                <Route exact path="/ingresar/ingreso" component={FormIngresos} />
-                                <Route exact path="/egresos/:id" component={Egresos} />
-                                <Route exact path="/ingresos/:id" component={Ingresos} />
-                            </>
-                            :
-                            <Redirect to="/" />
-                }
-            </Container>
-
+                        </ProyectoProvider>
+                    }
+                    {
+                        user.rango == 'moderador' &&
+                        <ProyectoProvider>
+                            <Route exact path="/ingresar/egreso" component={FormEgresos} />
+                            <Route exact path="/ingresar/ingreso" component={FormIngresos} />
+                            <Route exact path="/egresos/:id" component={Egresos} />
+                            <Route exact path="/ingresos/:id" component={Ingresos} />
+                        </ProyectoProvider>
+                    }
+                </Container>
         </BrowserRouter>
     )
 }

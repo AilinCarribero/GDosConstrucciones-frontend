@@ -43,7 +43,7 @@ const FormUsuarios = () => {
         if (form.checkValidity() === true) {
             try {
                 const resNewUser = await insertUser(newUser);
-console.log(resNewUser)
+
                 if (resNewUser.todoOk == 'Ok') {
                     ToastComponent('success');
 

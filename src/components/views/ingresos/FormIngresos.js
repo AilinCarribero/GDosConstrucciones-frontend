@@ -69,8 +69,6 @@ const FormIngresos = () => {
         const targetType = e.target.type;
         const targetCheck = e.target.checked;
 
-        //console.log(targetName + ' - ' + targetValue + ' - ' + targetType + ' - ' + targetCheck)
-
         if (targetName == 'cantCheque') {
             setCantCheque(targetValue);
             setShowDataCheques(true);
@@ -194,7 +192,6 @@ const FormIngresos = () => {
         if(auxIngresos.length > 0) {
             try {
                 resIngreso = await insertIngreso(auxIngresos);
-                console.log(resIngreso);
             } catch (error) {
                 console.log(error);
                 ToastComponent('error');
@@ -207,9 +204,6 @@ const FormIngresos = () => {
                     ingreso.fecha_diferido_cobro = '0000-00-00';
                     resIngreso = await insertIngreso(ingreso);
                 }
-                
-                console.log('hola ingreso');
-                console.log(resIngreso);
             } catch (error) {
                 console.log(error);
                 ToastComponent('error');

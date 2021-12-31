@@ -33,7 +33,7 @@ const Home = () => {
             const userResponse = await login(data);
 
             const segCookie = 60*60*24*6;
-
+            
             if (userResponse.token) {
                 window.localStorage.setItem('loggedAppUser', JSON.stringify(userResponse));
                 document.cookie= 'loggedAppUser=existo; max-age='+segCookie+';';
@@ -42,7 +42,7 @@ const Home = () => {
 
                 history.push("/");
             } else {
-                ToastComponent('error','Error al intentar ingresar');
+                ToastComponent('error',userResponse);
                 console.log('Error');
             }
         } catch (error) {

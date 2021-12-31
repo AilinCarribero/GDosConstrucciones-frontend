@@ -3,7 +3,7 @@ import { getIngresos, getIngresosId } from "../services/apiIngresos";
 
 export const useGetIngresos = () => {
     const [ ingresos, setIngresos ] = useState([]);
-
+    
     useEffect(() => {
         (async () => {
             const resIngresos = await getIngresos();

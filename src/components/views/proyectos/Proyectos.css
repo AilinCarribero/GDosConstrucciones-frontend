@@ -1,12 +1,21 @@
 .resumenTotales{
     background-color: rgb(32, 32, 32);
     padding: 5px;
-    padding-top: 17px;
-    padding-bottom: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     margin-top: 2%;
     margin-bottom: 2%;
     color: beige;
     align-items: center;
+}
+
+.title-resumen-totales{
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.text-resumen-totales{
+    font-size: 15px;
 }
 
 .acordeonTotales button{
@@ -48,6 +57,10 @@ button .accordion-button {
 
 .accordionCC{
     border: solid 1px !important;
+}
+
+.border-top{
+    border-top: 1.5px solid white;
 }
 
 @media only screen and (hover: none) and (pointer: coarse){

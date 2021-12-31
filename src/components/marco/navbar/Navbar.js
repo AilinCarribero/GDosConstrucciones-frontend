@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navbar, Container, Nav, Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
@@ -12,20 +12,41 @@ import Sidenav from '../sidenav/Sidenav';
 import './Navbar.css';
 import * as Icons from 'react-bootstrap-icons';
 import logo from '../../../img/logowhitev2.png';
+import FiltrosProyectos from '../../utils/filtros/FiltrosProyectos';
+
+//Contexts
+import ProyectoProvider from '../../../contexts/ProyectosProvider';
+import { useFiltros } from '../../../hooks/useFiltros';
 
 const NavbarComponent = () => {
     const { logout, user } = useUser();
+    const { handleFiltros } = useFiltros();
+
+    const [show, setShow] = useState(true);
+
+    const handleShow = () => {
+        setShow(!show);
+        /*const e = {
+            target: {
+                name: 'all' ,
+                value: '',
+            }
+        }
+        handleFiltros(e);*/
+    }; 
 
     const renderLogaut = () => {
-        if(user.token) {
-            console.log(user);
+        if (user.token) {
             return (<>
+                <Nav.Item className="filtros" onClick={handleShow} >
+                    <Icons.FunnelFill className="icon-filtros" size="25px" />
+                </Nav.Item>
                 <Navbar.Collapse className="justify-content-end">
                     <Navbar.Text> <b className="text-nombre">{user.nombre_apellido}</b> </Navbar.Text>
                 </Navbar.Collapse>
-                <Nav.Link className="botton-sesion" onClick={logout} to="/"><Icons.DoorOpenFill className="icon-salida" size="25px" /></Nav.Link> 
+                <Nav.Link className="botton-sesion" onClick={logout} to="/"><Icons.DoorOpenFill className="icon-salida" size="25px" /></Nav.Link>
             </>)
-        } 
+        }
     }
 
     useEffect(() => {
@@ -35,15 +56,16 @@ const NavbarComponent = () => {
 
     return (<>
         <Navbar className="navbar">
-            { user.rango == 'admin' && <Sidenav />}
-            { user.rango == 'moderador'  && <Sidenav />}
+            {user.rango == 'admin' && <Sidenav />}
+            {user.rango == 'moderador' && <Sidenav />}
             <Container>
                 <Link to="/">
-                    <Image src={logo} className="align-top img" alt="GDos Construcciones"/>
+                    <Image src={logo} className="align-top img" alt="GDos Construcciones" />
                 </Link>
                 {renderLogaut()}
             </Container>
         </Navbar>
+        <FiltrosProyectos show={show} />
     </>)
 }
 export default NavbarComponent;
