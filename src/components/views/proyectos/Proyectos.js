@@ -314,10 +314,10 @@ const Proyectos = () => {
                                         Ingresos:
                                     </Col>
                                     <Col xs={12} md={6} className="text-resumen-totales">
-                                        ${formatNumber(totales.ingresos)}
+                                        ${totales.ingresos ? formatNumber(totales.ingresos) : 0}
                                     </Col>
                                     <Col xs={12} md={6} className="text-resumen-totales">
-                                        USD${formatNumber(totales.ingresosUSD)}
+                                        USD${totales.ingresosUSD ? formatNumber(totales.ingresosUSD) : 0}
                                     </Col>
                                 </Row>
                             </Col>
@@ -337,10 +337,10 @@ const Proyectos = () => {
                                         Egresos:
                                     </Col>
                                     <Col xs={12} md={6} className="text-resumen-totales">
-                                        ${formatNumber(totales.egresos)}
+                                        ${totales.egresos ? formatNumber(totales.egresos) : 0}
                                     </Col>
                                     <Col xs={12} md={6} className="text-resumen-totales">
-                                        USD${formatNumber(totales.egresosUSD)}
+                                        USD${totales.egresosUSD ? formatNumber(totales.egresosUSD) : 0}
                                     </Col>
                                 </Row>
                             </Col>
