@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 //Hooks
 import { useUser } from '../../../hooks/useUser';
+import { useFiltros } from '../../../hooks/useFiltros';
 
 //Componentes
 import Sidenav from '../sidenav/Sidenav';
@@ -15,12 +16,10 @@ import logo from '../../../img/logowhitev2.png';
 import FiltrosProyectos from '../../utils/filtros/FiltrosProyectos';
 
 //Contexts
-import ProyectoProvider from '../../../contexts/ProyectosProvider';
-import { useFiltros } from '../../../hooks/useFiltros';
+//import ProyectoProvider from '../../../contexts/ProyectosProvider';
 
 const NavbarComponent = () => {
     const { logout, user } = useUser();
-    const { handleFiltros } = useFiltros();
 
     const [show, setShow] = useState(true);
 

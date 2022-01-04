@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Redirect, Route } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 
 //Views Components
@@ -18,7 +18,7 @@ import Ingresos from './components/views/ingresos/Ingresos';
 import { useUser } from './hooks/useUser';
 
 //Contexts
-import ProyectoProvider from './contexts/ProyectosProvider';
+//import ProyectoProvider from './contexts/ProyectosProvider';
 
 const Routers = () => {
     const { user } = useUser();
@@ -39,7 +39,7 @@ const Routers = () => {
 
                     {
                         user.rango == 'admin' &&
-                        <ProyectoProvider>
+                        <>
                             <Route exact path="/ingresar/egreso" component={FormEgresos} />
                             <Route exact path="/ingresar/ingreso" component={FormIngresos} />
                             <Route exact path="/ingresar/proyecto" component={FormProyectos} />
@@ -47,16 +47,16 @@ const Routers = () => {
                             <Route exact path="/usuarios" component={Usuarios} />
                             <Route exact path="/egresos/:id" component={Egresos} />
                             <Route exact path="/ingresos/:id" component={Ingresos} />
-                        </ProyectoProvider>
+                        </>
                     }
                     {
                         user.rango == 'moderador' &&
-                        <ProyectoProvider>
+                        <>
                             <Route exact path="/ingresar/egreso" component={FormEgresos} />
                             <Route exact path="/ingresar/ingreso" component={FormIngresos} />
                             <Route exact path="/egresos/:id" component={Egresos} />
                             <Route exact path="/ingresos/:id" component={Ingresos} />
-                        </ProyectoProvider>
+                        </>
                     }
                 </Container>
         </BrowserRouter>

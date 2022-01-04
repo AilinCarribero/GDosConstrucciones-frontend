@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 //Hooks
 import { formatNumber } from '../../../hooks/useUtils';
-import { useFiltros } from '../../../hooks/useFiltros';
+//import { useFiltros } from '../../../hooks/useFiltros';
 
 //Contexts 
 import { ProyectoContext } from '../../../contexts/ProyectosProvider';
@@ -12,18 +12,25 @@ import { ProyectoContext } from '../../../contexts/ProyectosProvider';
 //Css
 import './Proyectos.css';
 import * as Icons from 'react-bootstrap-icons';
-import SpinnerC from '../../utils/spinner/SpinnerC';
+import { useGetProyectos } from '../../../hooks/useProyectos';
+//import SpinnerC from '../../utils/spinner/SpinnerC';
+//import { useGetEgresos } from '../../../hooks/useEgresos';
+//import { useGetIngresos } from '../../../hooks/useIngresos';
 
 const Proyectos = () => {
-    const fecha = toString(new Date().toISOString());
-    const { filtrosProyectosContext } = useContext(ProyectoContext);
-    const [proyectos, setProyectos] = useState([]);
-
+    const { proyectosContext, setProyectosContext } = useContext(ProyectoContext);
+    const { proyectos } = useGetProyectos();
+    
     useEffect(() => {
+        setProyectosContext(proyectos);
+    }, [proyectos])
+
+    //Si los filtros son modificados se deben modificar los proyectos y mostrar los proyectos filtrados
+    /*useEffect(() => {
         if (filtrosProyectosContext) {
             setProyectos(filtrosProyectosContext);
         }
-    }, [filtrosProyectosContext]);
+    }, [filtrosProyectosContext]);*/
 
     const [spinner, setSpinner] = useState(true);
 
@@ -93,6 +100,8 @@ const Proyectos = () => {
         return (auxIngresosProyecto)
     }
 
+    /*Setea y calcula el total de ventas, costos, ingresos (todo, por unidad), egresos(todo, por unidad) 
+    y la diferencia entre egresos e ingresos */
     const resumenContableProyectos = () => {
         let auxTotalCosto = 0;
         let auxTotalVenta = 0;
@@ -113,8 +122,8 @@ const Proyectos = () => {
         let auxCCEI = 0;
 
         //Reparte los ingresos y los egresos correspondientes a cada area
-        if (proyectos.length > 0) {
-            proyectos.map(proyecto => {
+        if (proyectosContext && proyectosContext.length > 0) {
+            proyectosContext.map(proyecto => {
                 if (proyecto.id_centro_costo == '2') {
                     auxTotalCosto += parseFloat(proyecto.costo);
                     auxTotalVenta += parseFloat(proyecto.venta);
@@ -239,8 +248,13 @@ const Proyectos = () => {
                 }
             })
         } else {
-            auxTotalCosto = proyectos.costo;
-            auxTotalVenta = proyectos.venta;
+            if (proyectosContext) {
+                auxTotalCosto = proyectosContext.costo || 0;
+                auxTotalVenta = proyectosContext.venta || 0;
+            } else {
+                auxTotalCosto = 0;
+                auxTotalVenta = 0;
+            }
         }
 
         setTotales({
@@ -266,9 +280,10 @@ const Proyectos = () => {
         setSpinner(false);
     }
 
+    //Si existe alguna modificacion en los proyectos se debe recalcular todo
     useEffect(() => {
         resumenContableProyectos();
-    }, [proyectos])
+    }, [proyectosContext])
 
     return (<>
         <div>
@@ -356,9 +371,9 @@ const Proyectos = () => {
                                     ${formatNumber(totales.ingresos - totales.egresos)}
                                 </Col>
                                 <Col xs={6} md={6} className="text-resumen-totales">
-                                    USD${ totales.ingresosUSD && totales.egresosUSD ? formatNumber(totales.ingresosUSD - totales.egresosUSD) 
-                                        : (totales.ingresosUSD ? formatNumber(totales.ingresosUSD) 
-                                        :( totales.egresosUSD ?  formatNumber(totales.egresosUSD) : 0))}
+                                    USD${totales.ingresosUSD && totales.egresosUSD ? formatNumber(totales.ingresosUSD - totales.egresosUSD)
+                                        : (totales.ingresosUSD ? formatNumber(totales.ingresosUSD)
+                                            : (totales.egresosUSD ? formatNumber(totales.egresosUSD) : 0))}
                                 </Col>
                             </Row>
                         </Col>
@@ -369,8 +384,8 @@ const Proyectos = () => {
             <Row>
                 <Accordion>
                     {
-                        proyectos.length > 0 &&
-                        proyectos.map(proyecto => (
+                        proyectosContext && proyectosContext.length > 0 &&
+                        proyectosContext.map(proyecto => (
                             <Col key={proyecto.id_proyecto}>
                                 <Accordion.Item eventKey={proyecto.id_proyecto} className={proyecto.id_centro_costo == 1 || proyecto.id_centro_costo == 3 ? 'accordionCC' : ''}>
                                     <Accordion.Header> {proyecto.id_proyecto} </Accordion.Header>

@@ -1,15 +1,19 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import { ProyectoContext } from "../contexts/ProyectosProvider";
 import { useGetProyectos } from "./useProyectos";
 import { ToastComponent } from "./useUtils";
 
 export const useFiltros = () => {
-    const { proyectos, setProyectos } = useGetProyectos();
-    const { filtrosProyectosContext, setFiltrosProyectosContext } = useContext(ProyectoContext)
+    const { proyectos } = useGetProyectos();
+    const { proyectosContext, setProyectosContext } = useContext(ProyectoContext);
 
+    const [proyectosFiltros, setProyectosFiltros] = useState();
+    const [filtros, setFiltros] = useState();
+
+    //Si los proyectos se modifican 
     useEffect(() => {
-        setFiltrosProyectosContext(proyectos);
-    }, [proyectos])
+        setProyectosFiltros(proyectosContext);
+    }, [proyectosContext])
     
     const handleFiltros = (e) => {
         let targetName = e.target.name;
@@ -22,8 +26,10 @@ export const useFiltros = () => {
             targetName ='';
         }
 
+/* FALTA!!! --->> Guardar filtros y siempre que se agregue un filtro buscar sobre los proyectos aplicando todos los filtros*/
+
         /* De a cuerdo a que se estre ingresando se filtra lo correspondiente */
-        const resultadoFiltroProyecto = proyectos.filter(proyecto => {
+        const resultadoFiltroProyecto = proyectosFiltros.filter(proyecto => {
             switch (targetName) {
                 case 'fecha_diferida_cobro_hasta':
                     if (proyecto.ingresos.length > 0) {
@@ -98,16 +104,16 @@ export const useFiltros = () => {
                     }
                     break;
                 default: 
-                    setFiltrosProyectosContext(proyectos);
+                    setProyectosContext(proyectos);
                     break;
             }
         })
 
         if(resultadoFiltroProyecto.length > 0){
-            setFiltrosProyectosContext(resultadoFiltroProyecto);
+            setProyectosContext(resultadoFiltroProyecto);
         } else if(resultadoFiltroProyecto.length <= 0 && targetName ){
             ToastComponent('warn','No se encontraron resultados');
-            setFiltrosProyectosContext(proyectos)
+            setProyectosContext(proyectos)
         }
     }
 

@@ -1,12 +1,14 @@
 FROM node:14
 
-WORKDIR /app
+COPY ["package.json", "package-lock.json", "/app/frontend/"]
 
-COPY . /app
+WORKDIR /app
 
 ENV REACT_APP_REST=/api
 
 RUN npm install
+
+COPY [".", "/app/frontend/"]
 
 RUN npm i -g serve
 

@@ -1,12 +1,11 @@
 import React, { createContext, useState } from "react";
-import { useFiltros } from "../hooks/useFiltros";
 
-export const ProyectoContext = createContext({ filtrosProyectosContext: [], setFiltrosProyectosContext: () => {}});
+export const ProyectoContext = createContext({ proyectosContext: [], setProyectosContext: () => {}});
 
 const ProyectoProvider = ({ children }) => {
-    const [ filtrosProyectosContext, setFiltrosProyectosContext  ] = useState();
+    const [ proyectosContext, setProyectosContext  ] = useState();
 
-    return <ProyectoContext.Provider value={{ filtrosProyectosContext, setFiltrosProyectosContext }}>
+    return <ProyectoContext.Provider value={{ proyectosContext, setProyectosContext }}>
         {children}
     </ProyectoContext.Provider>
 }

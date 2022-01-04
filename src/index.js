@@ -12,8 +12,8 @@ import 'react-toastify/dist/ReactToastify.css';
 ReactDOM.render(
     <UserProvider>
         <ProyectoProvider>
-        <ToastContainer />
-        <Routers />
+            <ToastContainer />
+            <Routers />
         </ProyectoProvider>
     </UserProvider>
 , document.getElementById('root'));
