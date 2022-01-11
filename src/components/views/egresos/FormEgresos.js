@@ -73,7 +73,7 @@ const FormEgresos = () => {
     const handleChangeForm = (e) => {
         const targetName = e.target.name
         const targetValue = e.target.value
-        const targetType = e.target.type;
+        //const targetType = e.target.type;
         const targetCheck = e.target.checked;
 
         //console.log(targetName + ' - ' + targetValue + ' - ' + targetType + ' - ' + targetCheck)
@@ -207,7 +207,7 @@ const FormEgresos = () => {
                 ToastComponent('error');
             }
         }
-        
+
         if (resEgreso.data.todoOk == 'Ok') {
             ToastComponent('success');
 

@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 //Hooks
 import { useUser } from '../../../hooks/useUser';
-import { useFiltros } from '../../../hooks/useFiltros';
 
 //Componentes
 import Sidenav from '../sidenav/Sidenav';
@@ -23,20 +22,12 @@ const NavbarComponent = () => {
 
     const [show, setShow] = useState(true);
 
-    const handleShow = () => {
-        setShow(!show);
-        /*const e = {
-            target: {
-                name: 'all' ,
-                value: '',
-            }
-        }
-        handleFiltros(e);*/
-    }; 
+    const handleShow = () => { setShow(!show); };
 
     const renderLogaut = () => {
         if (user.token) {
             return (<>
+                {/*Si no esta en la url de proyectos no se debe mostrar el boton de filtros*/}
                 <Nav.Item className="filtros" onClick={handleShow} >
                     <Icons.FunnelFill className="icon-filtros" size="25px" />
                 </Nav.Item>

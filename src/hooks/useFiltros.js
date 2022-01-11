@@ -8,114 +8,124 @@ export const useFiltros = () => {
     const { proyectosContext, setProyectosContext } = useContext(ProyectoContext);
 
     const [proyectosFiltros, setProyectosFiltros] = useState();
-    const [filtros, setFiltros] = useState();
+    let [filtros, setFiltros] = useState({
+        fecha_cobro_hasta: new Date('3000-12-30').toISOString(),
+        fecha_cobro_desde: '0000-00-00',
+        fecha_pago_hasta: new Date('3000-12-30').toISOString(),
+        fecha_pago_desde: '0000-00-00',
+        fecha_diferida_cobro_hasta: new Date('3000-12-30').toISOString(),
+        fecha_diferida_cobro_desde: '0000-00-00',
+        fecha_diferida_pago_hasta: new Date('3000-12-30').toISOString(),
+        fecha_diferida_pago_desde: '0000-00-00'
+    });
+
+    //Valores de los filtros por default
+    const valueFiltrosdefault = {
+        fecha_cobro_hasta: new Date('3000-12-30').toISOString(),
+        fecha_cobro_desde: '0000-00-00',
+        fecha_pago_hasta: new Date('3000-12-30').toISOString(),
+        fecha_pago_desde: '0000-00-00',
+        fecha_diferida_cobro_hasta: new Date('3000-12-30').toISOString(),
+        fecha_diferida_cobro_desde: '0000-00-00',
+        fecha_diferida_pago_hasta: new Date('3000-12-30').toISOString(),
+        fecha_diferida_pago_desde: '0000-00-00'
+    }
 
     //Si los proyectos se modifican 
     useEffect(() => {
         setProyectosFiltros(proyectosContext);
     }, [proyectosContext])
-    
+
     const handleFiltros = (e) => {
         let targetName = e.target.name;
         let targetValue = e.target.value;
+        let resultadoFiltroProyecto = [];
 
         //console.log(targetName + ' - ' + targetValue);
-        
-        /*En caso de que el valor de target venga vacio el name debera tambien estar vacio para que no se filtre nada */
-        if(!targetValue) {
-            targetName ='';
+        /*En caso de que el valor de target venga vacio se resetea el filtro al valor por defecto*/
+        if (!targetValue) {
+            if (targetName.includes('cobro')) {
+                if (targetName.includes('hasta')) {
+                    filtros[targetName] = new Date('3000-12-30').toISOString();
+                } else {
+                    filtros[targetName] = '0000-00-00';
+                }
+            } else {
+                if (targetName.includes('hasta')) {
+                    filtros[targetName] = new Date('3000-12-30').toISOString();
+                } else {
+                    filtros[targetName] = '0000-00-00';
+                }
+            }
+        } else {
+            filtros[targetName] = new Date(targetValue).toISOString()
         }
 
-/* FALTA!!! --->> Guardar filtros y siempre que se agregue un filtro buscar sobre los proyectos aplicando todos los filtros*/
+        //Si los filtros son diferentes a los default significa que hay algun filtro para aplicar
+        if (valueFiltrosdefault != filtros) {
+            resultadoFiltroProyecto = proyectos.filter(proyecto => {
+                if (filtros.fecha_cobro_hasta != valueFiltrosdefault.fecha_cobro_hasta 
+                    || filtros.fecha_cobro_desde != valueFiltrosdefault.fecha_cobro_desde) {
+                    for (let i = 0; i < proyecto.ingresos.length; i++) {
+                        if (proyecto.ingresos[i].fecha_cobro >= filtros.fecha_cobro_desde
+                            && proyecto.ingresos[i].fecha_cobro <= filtros.fecha_cobro_hasta) {
+                            return proyecto //cobro 
+                        }
+                    }
+                } else {
+                    return proyecto
+                }
+            }).filter(proyecto => {
+                if (filtros.fecha_diferida_cobro_hasta != valueFiltrosdefault.fecha_diferida_cobro_hasta 
+                    || filtros.fecha_diferida_cobro_desde != valueFiltrosdefault.fecha_diferida_cobro_desde) {
+                    for (let i = 0; i < proyecto.ingresos.length; i++) {
+                        if (proyecto.ingresos[i].fecha_diferido_cobro >= filtros.fecha_diferida_cobro_desde
+                            && proyecto.ingresos[i].fecha_diferido_cobro <= filtros.fecha_diferida_cobro_hasta) {
+                            return proyecto //cobro diferido 
+                        }
+                    }
+                } else {
+                    return proyecto
+                }
+            }).filter(proyecto => {
+                if (filtros.fecha_pago_hasta != valueFiltrosdefault.fecha_pago_hasta 
+                    || filtros.fecha_pago_desde != valueFiltrosdefault.fecha_pago_desde) {
+                    for (let i = 0; i < proyecto.egresos.length; i++) {
+                        if (proyecto.egresos[i].fecha_pago >= filtros.fecha_pago_desde
+                            && proyecto.egresos[i].fecha_pago <= filtros.fecha_pago_hasta) {
+                            return proyecto //pago 
+                        }
+                    }
+                } else {
+                    return proyecto
+                }
+            }).filter(proyecto => {
+                if (filtros.fecha_diferida_pago_hasta != valueFiltrosdefault.fecha_diferida_pago_hasta 
+                    || filtros.fecha_diferida_pago_desde != valueFiltrosdefault.fecha_diferida_pago_desde) {
+                    for (let i = 0; i < proyecto.egresos.length; i++) {
+                        if (proyecto.egresos[i].fecha_diferido_pago >= filtros.fecha_diferida_pago_desde
+                            && proyecto.egresos[i].fecha_diferido_pago <= filtros.fecha_diferida_pago_hasta) {
+                            return proyecto //pago diferido 
+                        }
+                    }
+                } else {
+                    return proyecto
+                }
+            })
+        } else {
+            /*Si los filtros son iguales a los defautl debera reiniciar los proyectos que se muestran */
+            setProyectosContext(proyectos);
+        }
 
-        /* De a cuerdo a que se estre ingresando se filtra lo correspondiente */
-        const resultadoFiltroProyecto = proyectosFiltros.filter(proyecto => {
-            switch (targetName) {
-                case 'fecha_diferida_cobro_hasta':
-                    if (proyecto.ingresos.length > 0) {
-                        for (let i = 0; i < proyecto.ingresos.length; i++) {
-                            if (proyecto.ingresos[i].fecha_diferido_cobro <= targetValue  && proyecto.egresos[i].fecha_diferido_cobro != "0000-00-00") {
-                                return proyecto
-                            }
-                        }
-                    }
-                    break;
-                case 'fecha_diferida_cobro_desde':
-                    if (proyecto.ingresos.length > 0) {
-                        for (let i = 0; i < proyecto.ingresos.length; i++) {
-                            if (proyecto.ingresos[i].fecha_diferido_cobro >= targetValue) {
-                                return proyecto
-                            }
-                        }
-                    }
-                    break;
-                case 'fecha_diferida_pago_hasta':
-                    if (proyecto.egresos.length > 0) {
-                        for (let i = 0; i < proyecto.egresos.length; i++) {
-                            if (proyecto.egresos[i].fecha_diferido_pago <= targetValue && proyecto.egresos[i].fecha_diferido_pago != "0000-00-00") {
-                                return proyecto
-                            }
-                        }
-                    }
-                    break;
-                case 'fecha_diferida_pago_desde':
-                    if (proyecto.egresos.length > 0) {
-                        for (let i = 0; i < proyecto.egresos.length; i++) {
-                            if (proyecto.egresos[i].fecha_diferido_pago >= targetValue) {
-                                return proyecto
-                            }
-                        }
-                    }
-                    break;
-                case 'fecha_cobro_hasta':
-                    if (proyecto.ingresos.length > 0) {
-                        for (let i = 0; i < proyecto.ingresos.length; i++) {
-                            if (proyecto.ingresos[i].fecha_cobro <= targetValue) {
-                                return proyecto
-                            }
-                        }
-                    }
-                    break;
-                case 'fecha_cobro_desde':
-                    if (proyecto.ingresos.length > 0) {
-                        for (let i = 0; i < proyecto.ingresos.length; i++) {
-                            if (proyecto.ingresos[i].fecha_cobro >= targetValue) {
-                                return proyecto
-                            }
-                        }
-                    }
-                    break;
-                case 'fecha_pago_hasta':
-                    if (proyecto.egresos.length > 0) {
-                        for (let i = 0; i < proyecto.egresos.length; i++) {
-                            if (proyecto.egresos[i].fecha_pago <= targetValue) {
-                                return proyecto
-                            }
-                        }
-                    }
-                    break;
-                case 'fecha_pago_desde':
-                    if (proyecto.egresos.length > 0) {
-                        for (let i = 0; i < proyecto.egresos.length; i++) {
-                            if (proyecto.egresos[i].fecha_pago >= targetValue) {
-                                return proyecto
-                            }
-                        }
-                    }
-                    break;
-                default: 
-                    setProyectosContext(proyectos);
-                    break;
-            }
-        })
-
-        if(resultadoFiltroProyecto.length > 0){
+        if (resultadoFiltroProyecto.length > 0) { /*Nos aseguramos de tener resultados */
             setProyectosContext(resultadoFiltroProyecto);
-        } else if(resultadoFiltroProyecto.length <= 0 && targetName ){
-            ToastComponent('warn','No se encontraron resultados');
+        } else if (resultadoFiltroProyecto.length <= 0 && filtros != valueFiltrosdefault) {
+            /*Si no se obtenieron resultados y exisen filtros muestra una alerta de que no se encontraron los resultados 
+            y se resetean los proyectos que se muestran */
+            ToastComponent('warn', 'No se encontraron resultados');
             setProyectosContext(proyectos)
         }
     }
 
-    return { handleFiltros }
+    return { handleFiltros, filtros }
 }

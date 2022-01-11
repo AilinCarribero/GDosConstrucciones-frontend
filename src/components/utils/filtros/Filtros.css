@@ -17,3 +17,23 @@
 .text-filtros-title-input {
     font-size: 16px;
 }
+
+.check-box-row{
+    color: white;
+    margin-bottom: 10px;
+    margin-left: 1% !important;
+}
+
+.title-fechas-filtros{
+    color: white;
+}
+
+@media only screen and (hover: none) and (pointer: coarse){
+    .check-box-row{
+        font-size: 12px;
+    }
+    
+    .title-fechas-filtros{
+        font-size: 14px;
+    }
+}
