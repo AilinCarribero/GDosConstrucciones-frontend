@@ -63,8 +63,6 @@ const FormEgresos = () => {
     const [showDAC, setShowDAC] = useState(false);
     const [showCuotas, setShowCuotas] = useState(false);
     const [showFechaDif, setShowFechaDif] = useState(false);
-    const [showDetalleAC, setShowDetalleAC] = useState(false);
-    const [showDetalleFP, setShowDetalleFP] = useState(false);
     const [showModal, setShowModal] = useState(false);
 
     //Variables para validacion
@@ -114,7 +112,6 @@ const FormEgresos = () => {
         if (targetName === 'id_analisis_costo') {
             analisisCostos.forEach((analisisCosto) => {
                 if (analisisCosto.id_analisis_costo == targetValue) {
-                    setShowDetalleAC(analisisCosto.requiere_detalle === 1 ? true : false);//... requiere detalle mostrara el cambo para agregar el detalle
                     setShowDAC(analisisCosto.id_centro_costo === 1 ? true : false);//... pertence a un AC de CCC entonces mostrara para elegir el detalle del AC de CCC
                 }
             })
@@ -127,7 +124,6 @@ const FormEgresos = () => {
                     /* La forma de pago mediante tarjeta de credito se maneja diferente al resto */
                     setShowCuotas(formaPago.forma_pago === 'Tarjeta de Credito' ? true : false) //... es tarjeta de credito se debe mostrar la seleccion de cuotas
                     setShowFechaDif(formaPago.requiere_f_pago === 1 && formaPago.forma_pago !== 'Tarjeta de Credito' ? true : false) //... requiere una fecha diferente a la actual mostrar otro campo de fecha
-                    setShowDetalleFP(formaPago.requiere_d_pago === 1 && formaPago.forma_pago !== 'Tarjeta de Credito' ? true : false)//... requiere un detalle se debe mostrar un input text
                 }
             })
         }
@@ -213,8 +209,6 @@ const FormEgresos = () => {
 
             //En caso de tener algun elemento extra mostrandose se vuelve a ocular
             showCuotas && setShowCuotas(false);
-            showDetalleAC && setShowDetalleAC(false);
-            showDetalleFP && setShowDetalleFP(false);
             showFechaDif && setShowFechaDif(false);
             showDAC && setShowDAC(false);
             showAC && setShowDAC(false);
@@ -373,20 +367,11 @@ const FormEgresos = () => {
                                     </FloatingLabel>
                                 </Form.Group>
                             }
-                            {showDetalleAC &&
-                                <Form.Group className="mb-3">
-                                    <FloatingLabel controlId="floatingInputGrid" label="Detalle">
-                                        <Form.Control onChange={handleChangeForm} name="observaciones" type="text" value={egreso.observaciones} />
-                                    </FloatingLabel>
-                                </Form.Group>
-                            }
-                            {showDetalleFP &&
-                                <Form.Group className="mb-3">
-                                    <FloatingLabel controlId="floatingInputGrid" label="Detalle">
-                                        <Form.Control onChange={handleChangeForm} name="observaciones" type="text" value={egreso.observaciones} />
-                                    </FloatingLabel>
-                                </Form.Group>
-                            }
+                            <Form.Group className="mb-3">
+                                <FloatingLabel controlId="floatingInputGrid" label="Detalle">
+                                    <Form.Control onChange={handleChangeForm} name="observaciones" type="text" value={egreso.observaciones} />
+                                </FloatingLabel>
+                            </Form.Group>
                             <Form.Group className="mb-3">
                                 <Form.Label className="label-title">Comprobante de Pago</Form.Label>
                                 <Row key={`inline-radio`} className="check">

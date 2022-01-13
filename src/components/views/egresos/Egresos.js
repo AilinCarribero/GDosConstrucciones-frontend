@@ -14,6 +14,9 @@ const Egresos = () => {
     const { egresos } = useGetEgresosId(id);
 
     return (<>
+        <Row>
+            <Col className="titulo-egresos-vista">{id}</Col>
+        </Row>
         <Row className="acordion">
             <Accordion>
                 {
@@ -22,8 +25,9 @@ const Egresos = () => {
                             <Col key={egreso.id_egreso}>
                                 <Accordion.Item eventKey={egreso.id_egreso}>
                                     <Accordion.Header>
-                                        <Col className="acordion-title" xs={3} md={4}> <b>{egreso.analisis_costo}</b> </Col>
-                                        <Col className="acordion-title" xs={4} md={4}><b>{egreso.forma_pago}</b> </Col>
+                                        <Col className="acordion-title" xs={3} md={3}> <b>{egreso.analisis_costo}</b> </Col>
+                                        <Col className="acordion-title" xs={3} md={3}><b>{egreso.forma_pago}</b> </Col>
+                                        <Col className="acordion-title" xs={3} md={3}><b>{egreso.observaciones}</b> </Col>
                                         <Col className="acordion-title-number" xs={3} md={3}><b>{ egreso.valor_pago > 0 ? '$'+formatNumber(egreso.valor_pago) : 'USD$'+formatNumber(egreso.valor_usd) }</b> </Col>
                                     </Accordion.Header>
                                     <Accordion.Body>

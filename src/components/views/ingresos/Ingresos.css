@@ -26,3 +26,11 @@
 .acordion-title-number{
     font-size: 12px;
 }
+
+.titulo-ingresos-vista{
+    font-size: 17px;
+    margin-left: 10px;
+    margin-top: 15px !important;
+    margin-bottom: -15px;
+    font-weight: bold;
+}

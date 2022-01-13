@@ -2,7 +2,7 @@ FROM node:14
 
 COPY ["package.json", "package-lock.json", "/app/frontend/"]
 
-WORKDIR /app
+WORKDIR /app/frontend/
 
 ENV REACT_APP_REST=/api
 
@@ -12,8 +12,8 @@ COPY [".", "/app/frontend/"]
 
 RUN npm i -g serve
 
-RUN npm run build
+RUN npm build
 
-EXPOSE 5000
+EXPOSE 3000
 
 CMD ["serve", "-s", "build"]

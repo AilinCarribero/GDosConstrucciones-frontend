@@ -55,7 +55,7 @@ const FormIngresos = () => {
     const [showFC, setShowFC] = useState(false);
     const [showCuotas, setShowCuotas] = useState(false);
     const [showFechaDif, setShowFechaDif] = useState(false);
-    const [showDetalle, setShowDetalle] = useState(false);
+    //const [showDetalle, setShowDetalle] = useState(false);
     const [showCheque, setShowCheque] = useState(false);
     const [showDataCheques, setShowDataCheques] = useState(false);
     const [showModal, setShowModal] = useState(false);
@@ -77,7 +77,7 @@ const FormIngresos = () => {
                 ...prevCheques,
                 [targetName]: targetValue
             }))
-        } else if(targetCheck) {
+        } else if (targetCheck) {
             setCheckUSD(targetValue);
             setIngreso(prevIngreso => ({
                 ...prevIngreso,
@@ -114,11 +114,11 @@ const FormIngresos = () => {
                         && formaCobro.forma_cobro !== 'E-Cheq'
                         && formaCobro.forma_cobro !== 'C.P.D.'
                         ? true : false) //... requiere una fecha diferente a la actual mostrar otro campo de fecha
-                    setShowDetalle(formaCobro.requiere_d_cobro === 1
+                    /*setShowDetalle(formaCobro.requiere_d_cobro === 1
                         && formaCobro.forma_cobro !== 'Tarjeta de Credito'
                         && formaCobro.forma_cobro !== 'E-Cheq'
                         && formaCobro.forma_cobro !== 'C.P.D.'
-                        ? true : false)//... requiere un detalle se debe mostrar un input text
+                        ? true : false)//... requiere un detalle se debe mostrar un input text*/
                 }
             })
         }
@@ -145,7 +145,7 @@ const FormIngresos = () => {
                 auxCuotaValor = auxCuotaValor.replace(/\,/g, '.');
                 auxCuotaValor = parseFloat(auxCuotaValor);
 
-                const valorCuota = ingreso.valor_cobro ? auxCuotaValor/ingreso.cuota : 0;
+                const valorCuota = ingreso.valor_cobro ? auxCuotaValor / ingreso.cuota : 0;
 
                 if (valorCuota !== 0) {
                     for (let i = 0; i < ingreso.cuota; i++) {
@@ -188,8 +188,8 @@ const FormIngresos = () => {
 
     const handleSubmit = async () => {
         let resIngreso = [];
-        
-        if(auxIngresos.length > 0) {
+
+        if (auxIngresos.length > 0) {
             try {
                 resIngreso = await insertIngreso(auxIngresos);
             } catch (error) {
@@ -198,7 +198,7 @@ const FormIngresos = () => {
             }
         } else {
             try {
-                if(ingreso.fecha_diferido_cobro){
+                if (ingreso.fecha_diferido_cobro) {
                     resIngreso = await insertIngreso(ingreso);
                 } else {
                     ingreso.fecha_diferido_cobro = '0000-00-00';
@@ -215,7 +215,7 @@ const FormIngresos = () => {
 
             //En caso de tener algun elemento extra mostrandose se vuelve a ocular
             showCuotas && setShowCuotas(false);
-            showDetalle && setShowDetalle(false);
+            //showDetalle && setShowDetalle(false);
             showFechaDif && setShowFechaDif(false);
             showDataCheques && setShowDataCheques(false);
             showFC && setShowFC(false);
@@ -257,8 +257,8 @@ const FormIngresos = () => {
                         </Col>
                         <Col xs={6} sm={6}>
                             <FloatingLabel controlId="floatingInputGrid" label="Monto del Cheque">
-                                <NumberFormat customInput={Form.Control} decimalSeparator={","} thousandSeparator={"."} 
-                                            onChange={handleChangeForm} name={"monto" + i} required/>
+                                <NumberFormat customInput={Form.Control} decimalSeparator={","} thousandSeparator={"."}
+                                    onChange={handleChangeForm} name={"monto" + i} required />
                             </FloatingLabel>
                         </Col>
                     </Row>
@@ -338,8 +338,8 @@ const FormIngresos = () => {
                                         </Col>
                                     </Row>
                                     <FloatingLabel label="Importe">
-                                        <NumberFormat customInput={Form.Control} decimalSeparator={","} thousandSeparator={"."} 
-                                            onChange={handleChangeForm} name={checkUSD == 0 ? "valor_cobro" : "valor_usd"} value={checkUSD == 0 ? ingreso.valor_cobro : ingreso.valor_usd} required/>
+                                        <NumberFormat customInput={Form.Control} decimalSeparator={","} thousandSeparator={"."}
+                                            onChange={handleChangeForm} name={checkUSD == 0 ? "valor_cobro" : "valor_usd"} value={checkUSD == 0 ? ingreso.valor_cobro : ingreso.valor_usd} required />
                                     </FloatingLabel>
                                 </Form.Group>
                             }
@@ -380,16 +380,14 @@ const FormIngresos = () => {
                                     </FloatingLabel>
                                 </Form.Group>
                             }
-                            {showDetalle &&
-                                <Form.Group className="mb-3">
-                                    <FloatingLabel controlId="floatingInputGrid" label="Detalle">
-                                        <Form.Control onChange={handleChangeForm} name="observaciones" type="text" />
-                                    </FloatingLabel>
-                                </Form.Group>
-                            }
+                            <Form.Group className="mb-3">
+                                <FloatingLabel controlId="floatingInputGrid" label="Detalle">
+                                    <Form.Control onChange={handleChangeForm} name="observaciones" type="text" />
+                                </FloatingLabel>
+                            </Form.Group>
 
                             {showModal == true &&
-                                <ValidacionIngreso mostrar={showModal} datos={datosValidacion} cobro={formasCobro} setShow={setShowModal} setSubmit={handleSubmit} usd={checkUSD}/>
+                                <ValidacionIngreso mostrar={showModal} datos={datosValidacion} cobro={formasCobro} setShow={setShowModal} setSubmit={handleSubmit} usd={checkUSD} />
                             }
 
                             <Button className="button-submit" variant="dark" type="submit">
