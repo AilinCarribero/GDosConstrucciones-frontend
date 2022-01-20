@@ -1,19 +1,20 @@
 FROM node:14
 
-COPY ["package.json", "package-lock.json", "/app/frontend/"]
-
 WORKDIR /app/frontend/
 
-ENV REACT_APP_REST=/api
+COPY ["package.json", "package-lock.json", "/app/frontend/"]
+
+ENV REACT_APP_REST=http://localhost:5001/api/
 
 RUN npm install
-
+ 
 COPY [".", "/app/frontend/"]
-
-RUN npm i -g serve
-
-RUN npm build
 
 EXPOSE 3000
 
-CMD ["serve", "-s", "build"]
+RUN CI= npm run build
+
+CMD ["npm", "start"]
+
+#CMD ["npm", "run", "build"]
+
